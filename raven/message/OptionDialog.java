@@ -11,6 +11,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -21,6 +23,7 @@ public class OptionDialog extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JFrame fram;
+	private String correctPassword;
 	private Animator animator;
 	private Glass glass;
 	private boolean show;
@@ -103,6 +106,10 @@ public class OptionDialog extends javax.swing.JDialog {
 		return txt.getText();
 	}
 
+	public void setPasswod(String password) {
+		this.correctPassword = password;
+	}
+
 	public void closeMessage() {
 		startAnimator(false);
 	}
@@ -161,7 +168,32 @@ public class OptionDialog extends javax.swing.JDialog {
 
 		txt.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 		txt.setForeground(new java.awt.Color(76, 76, 76));
+		txt.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkPassword();
+			}
 
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkPassword();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkPassword();
+			}
+
+			private void checkPassword() {
+				// Get the current input from the password field
+				String enteredPassword = new String(txt.getPassword());
+
+				// Check if it matches the correct password
+				if (enteredPassword.equals(correctPassword)) {
+					cmdOKActionPerformed(null); // Trigger OK action
+				}
+			}
+		});
 		eyeOpen = new ImageIcon(getClass().getResource("/raven/message/eyeopen.png"));
 		eyeClosed = new ImageIcon(getClass().getResource("/raven/message/eyeclosed.png"));
 		showHide.setContentAreaFilled(false);
@@ -236,10 +268,13 @@ public class OptionDialog extends javax.swing.JDialog {
 		closeMessage();
 	}// GEN-LAST:event_cmdOKActionPerformed
 
-	public void openApp(String pass) {
-		txt.setText(pass);
-		messageType = MessageType.OK;
-		closeMessage();
+	public void autoUnlock() {
+		txt.setText(correctPassword);
+	    // Set the message type to OK (as if the user clicked OK)
+	    messageType = MessageType.OK;
+	    
+	    // Trigger the OK button action to close the dialog
+	    cmdOKActionPerformed(null);
 	}
 
 	public static enum MessageType {
