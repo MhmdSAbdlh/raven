@@ -231,6 +231,6 @@ public class UpdateMessage extends javax.swing.JDialog {
 	private javax.swing.JLabel lbIcon;
 	private javax.swing.JLabel lbTitle;
 	private javax.swing.JTextPane txt;
-	private javax.swing.JScrollPane scroller;;
+	private javax.swing.JScrollPane scroller;
 	// End of variables declaration//GEN-END:variables
 }
