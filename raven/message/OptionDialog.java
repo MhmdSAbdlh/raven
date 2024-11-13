@@ -90,12 +90,13 @@ public class OptionDialog extends javax.swing.JDialog {
 		txt.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				if (ke.getKeyCode() == KeyEvent.VK_MINUS) {
 					messageType = MessageType.CANCEL;
 					fram.setState(Frame.ICONIFIED);
-				}
-				if (ke.getKeyCode() == KeyEvent.VK_ENTER)
+				} else if (ke.getKeyCode() == KeyEvent.VK_ENTER)
 					getRootPane().setDefaultButton(cmdOK);
+				else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+					closeMessage();
 			}
 		});
 		txt.setText("");
@@ -270,11 +271,11 @@ public class OptionDialog extends javax.swing.JDialog {
 
 	public void autoUnlock() {
 		txt.setText(correctPassword);
-	    // Set the message type to OK (as if the user clicked OK)
-	    messageType = MessageType.OK;
-	    
-	    // Trigger the OK button action to close the dialog
-	    cmdOKActionPerformed(null);
+		// Set the message type to OK (as if the user clicked OK)
+		messageType = MessageType.OK;
+
+		// Trigger the OK button action to close the dialog
+		cmdOKActionPerformed(null);
 	}
 
 	public static enum MessageType {
