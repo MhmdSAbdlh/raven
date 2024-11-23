@@ -1,20 +1,24 @@
 package raven.modal;
 
+import java.awt.Component;
+import java.awt.LayoutManager;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JLayeredPane;
+import javax.swing.JRootPane;
+import javax.swing.RootPaneContainer;
+
 import raven.modal.layout.FrameModalLayout;
 import raven.modal.layout.FrameToastLayout;
 import raven.modal.option.LayoutOption;
 import raven.modal.option.Location;
-import raven.modal.toast.option.ToastLocation;
-import raven.modal.toast.option.ToastOption;
 import raven.modal.toast.ToastContainerLayer;
 import raven.modal.toast.ToastPanel;
 import raven.modal.toast.ToastPromise;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map;
+import raven.modal.toast.option.ToastLocation;
+import raven.modal.toast.option.ToastOption;
 
 /**
  * @author Raven

@@ -1,6 +1,9 @@
 package raven.modal.layout;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
 
 /**
  * @author Raven

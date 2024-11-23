@@ -1,6 +1,6 @@
 package raven.modal.utils;
 
-import java.awt.*;
+import java.awt.Insets;
 
 /**
  * @author Raven

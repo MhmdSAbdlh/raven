@@ -1,6 +1,6 @@
 package raven.modal.component;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * The super class for all modal dialog

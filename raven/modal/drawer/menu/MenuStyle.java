@@ -1,9 +1,13 @@
 package raven.modal.drawer.menu;
 
-import raven.modal.drawer.renderer.DrawerCurvedLineStyle;
-import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
-import javax.swing.*;
+import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
+import raven.modal.drawer.renderer.DrawerCurvedLineStyle;
 
 /**
  * @author Raven

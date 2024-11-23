@@ -1,11 +1,17 @@
 package raven.modal.layout;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
+
 import raven.modal.option.LayoutOption;
 import raven.modal.option.Location;
-
-import java.awt.*;
 
 /**
  * @author Raven

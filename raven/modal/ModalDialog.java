@@ -1,5 +1,19 @@
 package raven.modal;
 
+import java.awt.Component;
+import java.awt.LayoutManager;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JRootPane;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
+
 import raven.modal.component.Modal;
 import raven.modal.component.ModalContainer;
 import raven.modal.component.ModalContainerLayer;
@@ -8,12 +22,6 @@ import raven.modal.drawer.DrawerPanel;
 import raven.modal.layout.FrameModalLayout;
 import raven.modal.layout.FrameToastLayout;
 import raven.modal.option.Option;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Raven
@@ -51,7 +59,8 @@ public class ModalDialog {
 
     @SuppressWarnings("static-access")
 	public static void showModal(Component parentComponent, Modal modal, Option option, String id) {
-        if (getInstance().isIdExist(id)) {
+        getInstance();
+		if (ModalDialog.isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         SwingUtilities.invokeLater(() -> {
@@ -130,7 +139,8 @@ public class ModalDialog {
 
     @SuppressWarnings("static-access")
 	protected static ModalContainer showDrawer(RootPaneContainer rootPaneContainer, Modal modal, Option option, String id) {
-        if (getInstance().isIdExist(id)) {
+        getInstance();
+		if (ModalDialog.isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);

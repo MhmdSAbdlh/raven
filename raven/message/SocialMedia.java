@@ -10,8 +10,8 @@ import java.net.URI;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -42,7 +42,7 @@ public class SocialMedia extends javax.swing.JDialog {
 
 	private void init() {
 		setBackground(new Color(0, 0, 0, 0));
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		StyledDocument doc = lbTitle.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -65,7 +65,7 @@ public class SocialMedia extends javax.swing.JDialog {
 
 			@Override
 			public void end() {
-				if (show == false) {
+				if (!show) {
 					dispose();
 					glass.setVisible(false);
 				}
@@ -137,6 +137,7 @@ public class SocialMedia extends javax.swing.JDialog {
 		cmdOK.setForeground(Color.white);
 		cmdOK.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 		cmdOK.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				closeMessage();
 			}
@@ -195,8 +196,9 @@ public class SocialMedia extends javax.swing.JDialog {
 		cmdOK.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					closeMessage();
+				}
 			}
 		});
 		pack();

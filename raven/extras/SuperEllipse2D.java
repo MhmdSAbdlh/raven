@@ -1,6 +1,6 @@
 package raven.extras;
 
-import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
 /**

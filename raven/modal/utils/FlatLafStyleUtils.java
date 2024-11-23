@@ -1,11 +1,12 @@
 package raven.modal.utils;
 
-import com.formdev.flatlaf.FlatClientProperties;
-
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import javax.swing.JComponent;
+
+import com.formdev.flatlaf.FlatClientProperties;
 
 /**
  * @author Raven

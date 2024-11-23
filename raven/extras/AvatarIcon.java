@@ -1,16 +1,26 @@
 package raven.extras;
 
-import com.formdev.flatlaf.ui.FlatUIUtils;
-import com.formdev.flatlaf.util.UIScale;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.UIScale;
 
 /**
  * @author Raven
@@ -55,7 +65,9 @@ public class AvatarIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0) {
+			return;
+		}
         updateImage();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(image, x, y, null);
@@ -117,7 +129,9 @@ public class AvatarIcon implements Icon {
             paintBorder(g, mask, 0, 0, imageWidth, imageHeight, borderSize, innerSize, round);
         }
         g.dispose();
-        if (image != null) image.flush();
+        if (image != null) {
+			image.flush();
+		}
         return buff;
     }
 
@@ -137,7 +151,9 @@ public class AvatarIcon implements Icon {
     }
 
     private Shape createMask(int width, int height, int border, float round) {
-        if (round <= 0) return new Rectangle2D.Double(border, border, width, height);
+        if (round <= 0) {
+			return new Rectangle2D.Double(border, border, width, height);
+		}
         Shape mask;
         if (type == Type.ROUND) {
             if (round == 999) {
@@ -291,7 +307,9 @@ public class AvatarIcon implements Icon {
             } else {
                 op = opt;
             }
-            if (op == 0f) return;
+            if (op == 0f) {
+				return;
+			}
             if (op < 1f) {
                 g.setComposite(AlphaComposite.SrcOver.derive(op));
             }

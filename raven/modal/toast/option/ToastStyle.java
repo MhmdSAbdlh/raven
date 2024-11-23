@@ -1,8 +1,8 @@
 package raven.modal.toast.option;
 
-import raven.modal.Toast;
+import javax.swing.Icon;
 
-import javax.swing.*;
+import raven.modal.Toast;
 
 /**
  * @author Raven

@@ -1,11 +1,11 @@
 package raven.modal.drawer.simple.footer;
 
+import javax.swing.JLabel;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.drawer.menu.AbstractMenuElement;
 import raven.modal.drawer.menu.MenuOption;
 import raven.modal.utils.FlatLafStyleUtils;
-
-import javax.swing.*;
 
 /**
  * @author Raven
@@ -61,15 +61,19 @@ public class SimpleFooter extends AbstractMenuElement {
     public void setSimpleFooterData(SimpleFooterData simpleFooterData) {
         this.simpleFooterData = simpleFooterData;
 
-        if (labelTitle != null)
-            labelTitle.setText(simpleFooterData.getTitle());
-        if (labelDescription != null)
-            labelDescription.setText(simpleFooterData.getDescription());
+        if (labelTitle != null) {
+			labelTitle.setText(simpleFooterData.getTitle());
+		}
+        if (labelDescription != null) {
+			labelDescription.setText(simpleFooterData.getDescription());
+		}
     }
 
     @Override
     protected void layoutOptionChanged(MenuOption.MenuOpenMode menuOpenMode) {
-        if (labelTitle == null || labelDescription == null) return;
+        if (labelTitle == null || labelDescription == null) {
+			return;
+		}
 
         if (menuOpenMode == MenuOption.MenuOpenMode.FULL) {
             labelTitle.setVisible(true);

@@ -1,16 +1,30 @@
 package raven.modal.drawer.menu;
 
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.util.Arrays;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
+
 import raven.modal.drawer.data.Item;
 import raven.modal.drawer.data.MenuItem;
 import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
 import raven.modal.layout.DrawerMenuLayout;
 import raven.modal.utils.FlatLafStyleUtils;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
 /**
  * @author Raven
@@ -42,7 +56,7 @@ public class DrawerMenu extends AbstractMenuElement {
                     setMenuSelectedIndex(t.getIndex());
                     MenuAction action = runEvent(t, t.getIndex());
                     if (action != null) {
-                        if (action.getConsume() == false) {
+                        if (!action.getConsume()) {
                             if (isMenuAutoSelection(t.isMenu())) {
                                 setMenuSelectedIndex(t.getIndex());
                             }
@@ -215,10 +229,7 @@ public class DrawerMenu extends AbstractMenuElement {
     }
 
     protected boolean isMenuSelected(int[] itemIndex) {
-        if (menuSelectedIndex == null) {
-            return false;
-        }
-        if (itemIndex.length > menuSelectedIndex.length) {
+        if ((menuSelectedIndex == null) || (itemIndex.length > menuSelectedIndex.length)) {
             return false;
         }
         for (int i = 0; i < itemIndex.length; i++) {
@@ -262,7 +273,7 @@ public class DrawerMenu extends AbstractMenuElement {
         if (iconObject != null) {
             button.setIcon(iconObject);
         }
-        button.setHorizontalAlignment(JButton.LEADING);
+        button.setHorizontalAlignment(SwingConstants.LEADING);
         if (menuOption.menuStyle != null) {
             menuOption.menuStyle.styleMenuItem(button, copyArray(index), isMainItem);
         }
@@ -282,7 +293,7 @@ public class DrawerMenu extends AbstractMenuElement {
         button.addActionListener(e -> {
             MenuAction action = runEvent(button.getItem(), index);
             if (action != null) {
-                if (action.getConsume() == false) {
+                if (!action.getConsume()) {
                     if (isMenuAutoSelection(button.isMainItem())) {
                         menuSelectedIndex = index;
                         repaint();
@@ -297,10 +308,7 @@ public class DrawerMenu extends AbstractMenuElement {
         if (mode == null || mode == MenuOption.MenuItemAutoSelectionMode.NONE) {
             return false;
         }
-        if (mode == MenuOption.MenuItemAutoSelectionMode.SELECT_ALL) {
-            return true;
-        }
-        if (mode == MenuOption.MenuItemAutoSelectionMode.SELECT_MAIN_MENU_LEVEL && isMainMenu) {
+        if ((mode == MenuOption.MenuItemAutoSelectionMode.SELECT_ALL) || (mode == MenuOption.MenuItemAutoSelectionMode.SELECT_MAIN_MENU_LEVEL && isMainMenu)) {
             return true;
         }
         if (mode == MenuOption.MenuItemAutoSelectionMode.SELECT_SUB_MENU_LEVEL && !isMainMenu) {
@@ -477,11 +485,10 @@ public class DrawerMenu extends AbstractMenuElement {
             createMainMenuEvent(mainButton);
             applyMenuEvent(mainButton, this.index);
             add(mainButton);
-            for (int i = 0; i < menu.getSubMenu().size(); i++) {
+            for (Item item : menu.getSubMenu()) {
                 int[] arrIndex = createArrayIndex(this.index, index);
                 int[] arrValidationIndex = createArrayIndex(this.validationIndex, ++validationIndex);
                 boolean validation = menuOption.menuValidation.menuValidation(copyArray(arrValidationIndex));
-                Item item = menu.getSubMenu().get(i);
                 item.initIndexOnNull(arrIndex, validation);
                 if (validation) {
                     if (item.isSubmenuAble()) {
@@ -523,7 +530,7 @@ public class DrawerMenu extends AbstractMenuElement {
 
         protected ButtonItem createSubMenuItem(Item item, int[] index, int gap, boolean isMainItem) {
             ButtonItem button = new ButtonItem(item, index, isMainItem);
-            button.setHorizontalAlignment(JButton.LEADING);
+            button.setHorizontalAlignment(SwingConstants.LEADING);
             if (menuOption.menuStyle != null) {
                 menuOption.menuStyle.styleMenuItem(button, copyArray(index), isMainItem);
             }

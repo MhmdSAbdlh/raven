@@ -1,13 +1,21 @@
 package raven.modal.toast;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.JComponent;
+
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.ColorFunctions;
-import raven.modal.toast.option.ToastStyle;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
+import raven.modal.toast.option.ToastStyle;
 
 /**
  * @author Raven

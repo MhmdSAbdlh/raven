@@ -8,8 +8,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -34,7 +34,7 @@ public class MessageDialog extends javax.swing.JDialog {
 
 	private void init() {
 		setBackground(new Color(0, 0, 0, 0));
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -51,7 +51,7 @@ public class MessageDialog extends javax.swing.JDialog {
 
 			@Override
 			public void end() {
-				if (show == false) {
+				if (!show) {
 					dispose();
 					glass.setVisible(false);
 				}
@@ -113,6 +113,7 @@ public class MessageDialog extends javax.swing.JDialog {
 		cmdCancel.setText("Cancel");
 		cmdCancel.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 		cmdCancel.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdCancelActionPerformed(evt);
 			}
@@ -123,6 +124,7 @@ public class MessageDialog extends javax.swing.JDialog {
 		cmdOK.setForeground(Color.white);
 		cmdOK.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 		cmdOK.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdOKActionPerformed(evt);
 			}
@@ -179,15 +181,17 @@ public class MessageDialog extends javax.swing.JDialog {
 		cmdCancel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					closeMessage();
+				}
 			}
 		});
 		cmdOK.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					closeMessage();
+				}
 			}
 		});
 		pack();

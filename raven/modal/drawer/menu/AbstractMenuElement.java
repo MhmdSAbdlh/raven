@@ -1,6 +1,6 @@
 package raven.modal.drawer.menu;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * This class for menu element it's provide method to update layout between FULL and COMPACT

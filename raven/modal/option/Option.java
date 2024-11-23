@@ -1,6 +1,6 @@
 package raven.modal.option;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * This class for modal dialog option

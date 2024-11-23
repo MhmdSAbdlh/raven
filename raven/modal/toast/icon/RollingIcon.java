@@ -1,16 +1,20 @@
 package raven.modal.toast.icon;
 
-import com.formdev.flatlaf.ui.FlatUIUtils;
-import com.formdev.flatlaf.util.Animator;
-import com.formdev.flatlaf.util.UIScale;
-import raven.modal.toast.PromiseIcon;
-import raven.modal.toast.ToastPromise;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.Animator;
+import com.formdev.flatlaf.util.UIScale;
+
+import raven.modal.toast.PromiseIcon;
+import raven.modal.toast.ToastPromise;
 
 /**
  * @author Raven

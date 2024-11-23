@@ -1,6 +1,6 @@
 package raven.modal.drawer.simple.header;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
 /**
  * @author Raven

@@ -1,13 +1,18 @@
 package raven.modal.drawer;
 
+import java.awt.CardLayout;
+
+import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+
 import com.formdev.flatlaf.FlatClientProperties;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.Modal;
 import raven.modal.option.Option;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
 
 /**
  * @author Raven

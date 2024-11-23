@@ -1,12 +1,18 @@
 package raven.modal.utils;
 
-import com.formdev.flatlaf.util.UIScale;
-
-import javax.swing.border.Border;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+
+import javax.swing.border.Border;
+
+import com.formdev.flatlaf.util.UIScale;
 
 /**
  * @author Raven

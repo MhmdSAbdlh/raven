@@ -1,6 +1,9 @@
 package raven.modal.slider;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
 /**
  * @author Raven

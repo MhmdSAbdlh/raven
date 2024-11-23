@@ -1,11 +1,12 @@
 package raven.modal.drawer.simple.header;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.drawer.menu.AbstractMenuElement;
 import raven.modal.drawer.menu.MenuOption;
 import raven.modal.utils.FlatLafStyleUtils;
-
-import javax.swing.*;
 
 /**
  * @author Raven
@@ -69,17 +70,22 @@ public class SimpleHeader extends AbstractMenuElement {
     public void setSimpleHeaderData(SimpleHeaderData simpleHeaderData) {
         this.simpleHeaderData = simpleHeaderData;
 
-        if (profile != null)
-            profile.setIcon(simpleHeaderData.getIcon());
-        if (labelTitle != null)
-            labelTitle.setText(simpleHeaderData.getTitle());
-        if (labelDescription != null)
-            labelDescription.setText(simpleHeaderData.getDescription());
+        if (profile != null) {
+			profile.setIcon(simpleHeaderData.getIcon());
+		}
+        if (labelTitle != null) {
+			labelTitle.setText(simpleHeaderData.getTitle());
+		}
+        if (labelDescription != null) {
+			labelDescription.setText(simpleHeaderData.getDescription());
+		}
     }
 
     @Override
     protected void layoutOptionChanged(MenuOption.MenuOpenMode menuOpenMode) {
-        if (labelTitle == null || labelTitle == null) return;
+        if (labelTitle == null || labelTitle == null) {
+			return;
+		}
 
         if (menuOpenMode == MenuOption.MenuOpenMode.FULL) {
 

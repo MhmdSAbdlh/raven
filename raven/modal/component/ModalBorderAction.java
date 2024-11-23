@@ -1,6 +1,6 @@
 package raven.modal.component;
 
-import java.awt.*;
+import java.awt.Component;
 
 /**
  * @author Raven

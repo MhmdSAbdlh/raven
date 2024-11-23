@@ -1,7 +1,23 @@
 package raven.modal.component;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.util.Stack;
+import java.util.function.Consumer;
+
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.option.BorderOption;
 import raven.modal.option.Option;
@@ -10,13 +26,6 @@ import raven.modal.slider.SimpleTransition;
 import raven.modal.slider.SliderTransition;
 import raven.modal.utils.ImageSnapshots;
 import raven.modal.utils.ModalUtils;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.util.Stack;
-import java.util.function.Consumer;
 
 /**
  * @author Raven

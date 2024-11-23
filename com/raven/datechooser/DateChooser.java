@@ -258,6 +258,7 @@ public final class DateChooser extends javax.swing.JPanel {
 		cmdForward.setFocusable(true);
 		cmdForward.setPaintBackground(false);
 		cmdForward.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdForwardActionPerformed(evt);
 			}
@@ -274,6 +275,7 @@ public final class DateChooser extends javax.swing.JPanel {
 		cmdMonth.setFont(new java.awt.Font("Kh Content", 0, 14)); // NOI18N
 		cmdMonth.setPaintBackground(false);
 		cmdMonth.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdMonthActionPerformed(evt);
 			}
@@ -292,6 +294,7 @@ public final class DateChooser extends javax.swing.JPanel {
 		cmdYear.setFont(new java.awt.Font("Kh Content", 0, 14)); // NOI18N
 		cmdYear.setPaintBackground(false);
 		cmdYear.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdYearActionPerformed(evt);
 			}
@@ -303,11 +306,13 @@ public final class DateChooser extends javax.swing.JPanel {
 		cmdPrevious.setFocusable(true);
 		cmdPrevious.setPaintBackground(false);
 		cmdPrevious.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmdPreviousActionPerformed(evt);
 			}
 		});
 		cmdPrevious.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				cmdPreviousKeyPressed(evt);
 			}

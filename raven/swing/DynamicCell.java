@@ -19,6 +19,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JPanel;
 
 /**
@@ -235,7 +236,7 @@ public class DynamicCell<E> extends JPanel {
         int index = -1;
         Insets inset = getInsets();
         double width = getWidth() - (inset.left + inset.right);
-        double cellWidth = width / (float) column;
+        double cellWidth = width / column;
         double cellHeight = getCellHeight();
         double location = (viewLocation * cellHeight);
         double x = inset.left;

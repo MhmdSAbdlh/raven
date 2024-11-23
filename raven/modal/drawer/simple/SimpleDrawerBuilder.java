@@ -1,6 +1,15 @@
 package raven.modal.drawer.simple;
 
+import java.awt.Component;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.ScrollPaneConstants;
+
 import com.formdev.flatlaf.FlatClientProperties;
+
 import raven.modal.drawer.DrawerBuilder;
 import raven.modal.drawer.DrawerPanel;
 import raven.modal.drawer.menu.AbstractMenuElement;
@@ -14,9 +23,6 @@ import raven.modal.option.LayoutOption;
 import raven.modal.option.Location;
 import raven.modal.option.Option;
 import raven.modal.utils.FlatLafStyleUtils;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author Raven
@@ -58,7 +64,7 @@ public abstract class SimpleDrawerBuilder implements DrawerBuilder {
 
     protected JScrollPane createScroll(JComponent component) {
         JScrollPane scroll = new JScrollPane(component);
-        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         String background = FlatLafStyleUtils.getStyleValue(component, "background", "null");
         scroll.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:" + background);
@@ -136,7 +142,8 @@ public abstract class SimpleDrawerBuilder implements DrawerBuilder {
         drawerOpenChanged(isOpen);
     }
 
-    public void build(DrawerPanel drawerPanel) {
+    @Override
+	public void build(DrawerPanel drawerPanel) {
     }
 
     public void rebuildMenu() {

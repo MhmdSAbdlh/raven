@@ -1,11 +1,19 @@
 package raven.modal.drawer.renderer;
 
-import com.formdev.flatlaf.util.UIScale;
-import raven.modal.drawer.menu.AbstractMenuElement;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
+import javax.swing.JComponent;
+
+import com.formdev.flatlaf.util.UIScale;
+
+import raven.modal.drawer.menu.AbstractMenuElement;
 
 /**
  * This class for draw straight dot line style

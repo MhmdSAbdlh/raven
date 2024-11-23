@@ -1,11 +1,14 @@
 package raven.modal.toast;
 
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.Icon;
+import javax.swing.SwingUtilities;
+
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
 import com.formdev.flatlaf.util.UIScale;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author Raven
@@ -55,7 +58,7 @@ public abstract class PromiseIcon implements Icon {
 
                 @Override
                 public void end() {
-                    if (!promise.isDone() && stopped == false) {
+                    if (!promise.isDone() && !stopped) {
                         SwingUtilities.invokeLater(() -> {
                             if (animator != null && !animator.isRunning()) {
                                 animator.start();

@@ -1,8 +1,8 @@
 package raven.modal.option;
 
-import raven.modal.utils.DynamicSize;
+import java.awt.Insets;
 
-import java.awt.*;
+import raven.modal.utils.DynamicSize;
 
 /**
  * This class for option layout

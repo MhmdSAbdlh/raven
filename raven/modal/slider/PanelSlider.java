@@ -1,12 +1,21 @@
 package raven.modal.slider;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.VolatileImage;
+
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
+
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
-import raven.modal.layout.AnimatedLayout;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.VolatileImage;
+import raven.modal.layout.AnimatedLayout;
 
 /**
  * @author Raven
@@ -98,7 +107,7 @@ public class PanelSlider extends JLayeredPane {
 
     @Override
     public Color getBackground() {
-        if (useSlideAsBackground == false || slideComponent == null) {
+        if (!useSlideAsBackground || slideComponent == null) {
             return super.getBackground();
         }
         return slideComponent.getBackground();

@@ -1,14 +1,20 @@
 package raven.modal.layout;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.Collections;
+
 import com.formdev.flatlaf.util.UIScale;
+
 import raven.modal.Toast;
 import raven.modal.option.LayoutOption;
 import raven.modal.option.Location;
 import raven.modal.toast.ToastPanel;
-
-import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * @author Raven

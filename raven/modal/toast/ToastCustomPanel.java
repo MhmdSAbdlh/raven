@@ -1,6 +1,6 @@
 package raven.modal.toast;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * Use for custom toast

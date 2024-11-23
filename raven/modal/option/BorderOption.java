@@ -1,11 +1,14 @@
 package raven.modal.option;
 
-import com.formdev.flatlaf.ui.FlatUIUtils;
-import raven.modal.component.OutlineBorder;
-import raven.modal.utils.ModalUtils;
+import java.awt.Color;
+import java.awt.Insets;
 
 import javax.swing.border.Border;
-import java.awt.*;
+
+import com.formdev.flatlaf.ui.FlatUIUtils;
+
+import raven.modal.component.OutlineBorder;
+import raven.modal.utils.ModalUtils;
 
 /**
  * @author Raven

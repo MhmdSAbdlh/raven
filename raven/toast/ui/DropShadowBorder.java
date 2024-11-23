@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
-import com.formdev.flatlaf.FlatPropertiesLaf;
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.ui.FlatStylingSupport.Styleable;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
@@ -73,8 +73,8 @@ public class DropShadowBorder extends EmptyBorder {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         JComponent com = (JComponent) c;
-        int arc = FlatPropertiesLaf.getStyleableValue(com, "arc");
-        boolean useEffect = FlatPropertiesLaf.getStyleableValue(com, "useEffect");
+        int arc = FlatLaf.getStyleableValue(com, "arc");
+        boolean useEffect = FlatLaf.getStyleableValue(com, "useEffect");
         if (shadowImage == null || !shadowColor.equals(lastShadowColor) || width != lastWidth || height != lastHeight || shadowSize != lastShadowSize || shadowOpacity != lastShadowOpacity || arc != lastArc) {
             shadowImage = createShadowImage(width, height, arc);
 
@@ -103,9 +103,9 @@ public class DropShadowBorder extends EmptyBorder {
         if (useEffect) {
             createEffect(com, g2, lx, ly, lw, lh, arc);
         }
-        int outlineWidth = FlatPropertiesLaf.getStyleableValue(com, "outlineWidth");
+        int outlineWidth = FlatLaf.getStyleableValue(com, "outlineWidth");
         if (outlineWidth > 0) {
-            Color outlineColor = FlatPropertiesLaf.getStyleableValue(com, "outlineColor");
+            Color outlineColor = FlatLaf.getStyleableValue(com, "outlineColor");
             g2.setColor(outlineColor);
             FlatUIUtils.paintOutline(g2, lx, ly, lw, lh, UIScale.scale(outlineWidth), UIScale.scale(arc));
         }
@@ -113,10 +113,10 @@ public class DropShadowBorder extends EmptyBorder {
     }
 
     private void createEffect(JComponent c, Graphics2D g2, int x, int y, int width, int height, int arc) {
-        Color effectColor = FlatPropertiesLaf.getStyleableValue(c, "effectColor");
-        float effectWidth = FlatPropertiesLaf.getStyleableValue(c, "effectWidth");
-        float effectOpacity = FlatPropertiesLaf.getStyleableValue(c, "effectOpacity");
-        boolean effectRight = FlatPropertiesLaf.getStyleableValue(c, "effectAlignment").equals("right");
+        Color effectColor = FlatLaf.getStyleableValue(c, "effectColor");
+        float effectWidth = FlatLaf.getStyleableValue(c, "effectWidth");
+        float effectOpacity = FlatLaf.getStyleableValue(c, "effectOpacity");
+        boolean effectRight = FlatLaf.getStyleableValue(c, "effectAlignment").equals("right");
         if (!effectRight) {
             g2.setPaint(new GradientPaint(x, 0, effectColor, x + (width * effectWidth), 0, c.getBackground()));
         } else {

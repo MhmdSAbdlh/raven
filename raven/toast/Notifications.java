@@ -131,8 +131,7 @@ public class Notifications {
 
 	private synchronized void move(Rectangle rectangle) {
 		for (Map.Entry<Location, List<NotificationAnimation>> set : lists.entrySet()) {
-			for (int i = 0; i < set.getValue().size(); i++) {
-				NotificationAnimation an = set.getValue().get(i);
+			for (NotificationAnimation an : set.getValue()) {
 				if (an != null) {
 					an.move(rectangle);
 				}
@@ -176,8 +175,7 @@ public class Notifications {
 
 	public void clearAll() {
 		for (Map.Entry<Location, List<NotificationAnimation>> set : lists.entrySet()) {
-			for (int i = 0; i < set.getValue().size(); i++) {
-				NotificationAnimation an = set.getValue().get(i);
+			for (NotificationAnimation an : set.getValue()) {
 				if (an != null) {
 					an.close();
 				}
@@ -188,8 +186,7 @@ public class Notifications {
 	public void clear(Location location) {
 		List<NotificationAnimation> list = lists.get(location);
 		if (list != null) {
-			for (int i = 0; i < list.size(); i++) {
-				NotificationAnimation an = list.get(i);
+			for (NotificationAnimation an : list) {
 				if (an != null) {
 					an.close();
 				}
@@ -294,11 +291,11 @@ public class Notifications {
 
 				@Override
 				public void end() {
-					if (show && close == false) {
+					if (show && !close) {
 						SwingUtilities.invokeLater(() -> {
 							new Thread(() -> {
 								sleep(duration);
-								if (close == false) {
+								if (!close) {
 									show = false;
 									animator.start();
 								}
@@ -390,12 +387,11 @@ public class Notifications {
 		private int getLocation(NotificationAnimation notification) {
 			int height = 0;
 			List<NotificationAnimation> list = lists.get(location);
-			for (int i = 0; i < list.size(); i++) {
-				NotificationAnimation n = list.get(i);
+			for (NotificationAnimation n : list) {
 				if (notification == n) {
 					return height;
 				}
-				double v = n.animate * (list.get(i).window.getHeight() + UIScale.scale(horizontalSpace));
+				double v = n.animate * (n.window.getHeight() + UIScale.scale(horizontalSpace));
 				height += top ? v : -v;
 			}
 			return height;
@@ -403,8 +399,7 @@ public class Notifications {
 
 		private void update(NotificationAnimation except) {
 			List<NotificationAnimation> list = lists.get(location);
-			for (int i = 0; i < list.size(); i++) {
-				NotificationAnimation n = list.get(i);
+			for (NotificationAnimation n : list) {
 				if (n != except) {
 					n.updateLocation(false);
 				}

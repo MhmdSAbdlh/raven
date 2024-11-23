@@ -1,16 +1,22 @@
 package raven.modal.component;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.ui.FlatTitlePane;
-import raven.modal.drawer.DrawerLayoutResponsive;
-import raven.modal.layout.FullContentLayout;
-import raven.modal.option.Option;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.VolatileImage;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.RootPaneContainer;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatTitlePane;
+
+import raven.modal.drawer.DrawerLayoutResponsive;
+import raven.modal.layout.FullContentLayout;
+import raven.modal.option.Option;
 
 /**
  * @author Raven
@@ -112,7 +118,7 @@ public class ModalContainerLayer extends JLayeredPane {
         g.dispose();
 
         // paint drawer menu component that outside the contentPane to snapshot
-        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false && drawerLayoutResponsive.isShowing()) {
+        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened() && drawerLayoutResponsive.isShowing()) {
             drawEmbedComponent(snapshot);
         }
 
@@ -138,7 +144,7 @@ public class ModalContainerLayer extends JLayeredPane {
         };
         layeredSnapshot.setVisible(true);
         contentPane.setVisible(false);
-        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false) {
+        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened()) {
             drawerLayoutResponsive.getDrawerPanel().setVisible(false);
         }
         layeredSnapshot.add(componentSnapshot);
@@ -147,7 +153,7 @@ public class ModalContainerLayer extends JLayeredPane {
     protected void hideSnapshot() {
         layeredSnapshot.setVisible(false);
         rootPaneContainer.getContentPane().setVisible(true);
-        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false) {
+        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened()) {
             drawerLayoutResponsive.getDrawerPanel().setVisible(true);
         }
         layeredSnapshot.remove(componentSnapshot);

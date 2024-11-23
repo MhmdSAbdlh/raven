@@ -1,5 +1,9 @@
 package raven.modal;
 
+import java.awt.Component;
+
+import javax.swing.RootPaneContainer;
+
 import raven.modal.component.ModalContainer;
 import raven.modal.drawer.DrawerBuilder;
 import raven.modal.drawer.DrawerLayoutResponsive;
@@ -7,9 +11,6 @@ import raven.modal.drawer.DrawerPanel;
 import raven.modal.drawer.menu.MenuOption;
 import raven.modal.drawer.simple.SimpleDrawerBuilder;
 import raven.modal.option.Option;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author Raven

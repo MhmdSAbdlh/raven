@@ -1,18 +1,26 @@
 package raven.modal.toast;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
 import com.formdev.flatlaf.ui.FlatEmptyBorder;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.ColorFunctions;
 import com.formdev.flatlaf.util.UIScale;
-import raven.modal.toast.option.ToastStyle;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
+import raven.modal.toast.option.ToastStyle;
 
 /**
  * @author Raven

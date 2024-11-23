@@ -1,6 +1,7 @@
 package raven.modal.drawer.menu;
 
-import java.awt.*;
+import java.awt.Insets;
+import java.awt.Point;
 
 /**
  * @author Raven

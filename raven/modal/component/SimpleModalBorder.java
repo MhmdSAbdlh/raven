@@ -1,15 +1,24 @@
 package raven.modal.component;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.util.function.Consumer;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.listener.ModalCallback;
 import raven.modal.listener.ModalController;
 import raven.modal.option.ModalBorderOption;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.function.Consumer;
 
 /**
  * This class contain with title and close button
@@ -104,7 +113,7 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
 
     protected JScrollPane createContentScroll() {
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, "" +
                 "trackInsets:0,3,0,3;" +

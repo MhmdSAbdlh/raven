@@ -1,21 +1,38 @@
 package raven.modal.toast;
 
+import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.Toast;
 import raven.modal.option.LayoutOption;
 import raven.modal.toast.icon.RollingIcon;
 import raven.modal.toast.option.ToastOption;
 import raven.modal.toast.option.ToastStyle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * @author Raven
@@ -88,7 +105,7 @@ public class ToastPanel extends JPanel {
         if (icon != null) {
             content.add(new JLabel(icon), 0);
             if (toastData.getOption().getStyle().isIconSeparateLine()) {
-                separator = new JSeparator(JSeparator.VERTICAL);
+                separator = new JSeparator(SwingConstants.VERTICAL);
                 content.add(separator, "height 50%", 1);
             }
         }
@@ -103,7 +120,7 @@ public class ToastPanel extends JPanel {
         labelIcon = new JLabel(promiseIcon);
         content.add(labelIcon, 0);
         if (toastData.getOption().getStyle().isIconSeparateLine()) {
-            separator = new JSeparator(JSeparator.VERTICAL);
+            separator = new JSeparator(SwingConstants.VERTICAL);
             content.add(separator, "height 50%", 1);
         }
         return this;
@@ -217,7 +234,7 @@ public class ToastPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 hover = false;
-                if (toastData.getOption().isPauseDelayOnHover() && toastData.getOption().isAutoClose() && isCurrenPromise() == false) {
+                if (toastData.getOption().isPauseDelayOnHover() && toastData.getOption().isAutoClose() && !isCurrenPromise()) {
                     if (animator == null || !animator.isRunning()) {
                         delayStop();
                     }
@@ -227,7 +244,7 @@ public class ToastPanel extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    if (hover && toastData.getOption().isCloseOnClick() && isCurrenPromise() == false) {
+                    if (hover && toastData.getOption().isCloseOnClick() && !isCurrenPromise()) {
                         stop();
                     }
                 }
@@ -386,10 +403,7 @@ public class ToastPanel extends JPanel {
     }
 
     public void stop() {
-        if (!showing) {
-            return;
-        }
-        if (isCurrenPromise() && toastPromise.rejectAble() == false) {
+        if (!showing || (isCurrenPromise() && !toastPromise.rejectAble())) {
             return;
         }
         if (toastData.getOption().isAnimationEnabled()) {

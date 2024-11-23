@@ -1,11 +1,12 @@
 package raven.modal.toast;
 
-import raven.modal.layout.ToastLayout;
-import raven.modal.option.LayoutOption;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JLayeredPane;
+
+import raven.modal.layout.ToastLayout;
+import raven.modal.option.LayoutOption;
 
 /**
  * @author Raven

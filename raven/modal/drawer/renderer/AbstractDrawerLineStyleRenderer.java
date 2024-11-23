@@ -1,13 +1,19 @@
 package raven.modal.drawer.renderer;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Path2D;
+
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+
 import com.formdev.flatlaf.util.ColorFunctions;
 import com.formdev.flatlaf.util.UIScale;
+
 import raven.modal.drawer.menu.AbstractMenuElement;
 import raven.modal.drawer.menu.MenuOption;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Path2D;
 
 /**
  * @author Raven
