@@ -57,10 +57,8 @@ public class ModalDialog {
         showModal(parentComponent, modal, option, null);
     }
 
-    @SuppressWarnings("static-access")
-	public static void showModal(Component parentComponent, Modal modal, Option option, String id) {
-        getInstance();
-		if (ModalDialog.isIdExist(id)) {
+    public static void showModal(Component parentComponent, Modal modal, Option option, String id) {
+        if (getInstance().isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         SwingUtilities.invokeLater(() -> {
@@ -137,10 +135,8 @@ public class ModalDialog {
         return null;
     }
 
-    @SuppressWarnings("static-access")
-	protected static ModalContainer showDrawer(RootPaneContainer rootPaneContainer, Modal modal, Option option, String id) {
-        getInstance();
-		if (ModalDialog.isIdExist(id)) {
+    protected static ModalContainer showDrawer(RootPaneContainer rootPaneContainer, Modal modal, Option option, String id) {
+        if (getInstance().isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);

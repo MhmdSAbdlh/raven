@@ -1,4 +1,3 @@
-
 package raven.modal.drawer.renderer;
 
 import java.awt.BasicStroke;

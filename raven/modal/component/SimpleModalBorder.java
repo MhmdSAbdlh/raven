@@ -10,7 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -33,8 +32,7 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
 
     protected final ModalBorderOption option;
     protected final String title;
-    @SuppressWarnings("unused")
-	private final int optionType;
+    private final int optionType;
     private Option[] optionsType;
     private final ModalCallback callback;
 
@@ -113,7 +111,7 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
 
     protected JScrollPane createContentScroll() {
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, "" +
                 "trackInsets:0,3,0,3;" +
@@ -197,16 +195,14 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
         return button;
     }
 
-    @SuppressWarnings("rawtypes")
-	protected void applyBackButton(Consumer onBack) {
+    protected void applyBackButton(Consumer onBack) {
         Component backButton = createBackButton(onBack);
         if (header != null) {
             header.add(backButton, 0);
         }
     }
 
-    @SuppressWarnings("unchecked")
-	protected JComponent createBackButton(@SuppressWarnings("rawtypes") Consumer onBack) {
+    protected JComponent createBackButton(Consumer onBack) {
         JButton buttonClose = new JButton(new FlatSVGIcon("raven/modal/icon/back.svg", 0.4f));
         buttonClose.setFocusable(false);
         buttonClose.addActionListener(e -> onBack.accept(null));

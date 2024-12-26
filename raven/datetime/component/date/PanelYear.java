@@ -1,10 +1,12 @@
 package raven.datetime.component.date;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import net.miginfocom.swing.MigLayout;
 
 public class PanelYear extends JPanel {
 

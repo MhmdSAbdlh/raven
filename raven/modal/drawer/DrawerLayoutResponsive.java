@@ -93,7 +93,7 @@ public class DrawerLayoutResponsive {
     private boolean isUnsupportedCompactMenu(DrawerBuilder drawerBuilder) {
         if (drawerBuilder instanceof SimpleDrawerBuilder) {
             if (((SimpleDrawerBuilder) drawerBuilder).getSimpleMenuOption().getMenuOpenMode() == MenuOption.MenuOpenMode.COMPACT) {
-                if (!isHorizontalDrawer()) {
+                if (isHorizontalDrawer() == false) {
                     return true;
                 }
             }

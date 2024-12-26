@@ -19,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -29,8 +28,9 @@ import com.formdev.flatlaf.util.CubicBezierEasing;
 
 import net.miginfocom.swing.MigLayout;
 import raven.modal.Toast;
-import raven.modal.option.LayoutOption;
 import raven.modal.toast.icon.RollingIcon;
+import raven.modal.toast.option.ToastLayoutOption;
+import raven.modal.toast.option.ToastLocation;
 import raven.modal.toast.option.ToastOption;
 import raven.modal.toast.option.ToastStyle;
 
@@ -105,7 +105,7 @@ public class ToastPanel extends JPanel {
         if (icon != null) {
             content.add(new JLabel(icon), 0);
             if (toastData.getOption().getStyle().isIconSeparateLine()) {
-                separator = new JSeparator(SwingConstants.VERTICAL);
+                separator = new JSeparator(JSeparator.VERTICAL);
                 content.add(separator, "height 50%", 1);
             }
         }
@@ -120,7 +120,7 @@ public class ToastPanel extends JPanel {
         labelIcon = new JLabel(promiseIcon);
         content.add(labelIcon, 0);
         if (toastData.getOption().getStyle().isIconSeparateLine()) {
-            separator = new JSeparator(SwingConstants.VERTICAL);
+            separator = new JSeparator(JSeparator.VERTICAL);
             content.add(separator, "height 50%", 1);
         }
         return this;
@@ -234,7 +234,7 @@ public class ToastPanel extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 hover = false;
-                if (toastData.getOption().isPauseDelayOnHover() && toastData.getOption().isAutoClose() && !isCurrenPromise()) {
+                if (toastData.getOption().isPauseDelayOnHover() && toastData.getOption().isAutoClose() && isCurrenPromise() == false) {
                     if (animator == null || !animator.isRunning()) {
                         delayStop();
                     }
@@ -244,7 +244,7 @@ public class ToastPanel extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    if (hover && toastData.getOption().isCloseOnClick() && !isCurrenPromise()) {
+                    if (hover && toastData.getOption().isCloseOnClick() && isCurrenPromise() == false) {
                         stop();
                     }
                 }
@@ -403,7 +403,10 @@ public class ToastPanel extends JPanel {
     }
 
     public void stop() {
-        if (!showing || (isCurrenPromise() && !toastPromise.rejectAble())) {
+        if (!showing) {
+            return;
+        }
+        if (isCurrenPromise() && toastPromise.rejectAble() == false) {
             return;
         }
         if (toastData.getOption().isAnimationEnabled()) {
@@ -475,9 +478,20 @@ public class ToastPanel extends JPanel {
         return toastData;
     }
 
-    public boolean checkSameLayout(LayoutOption option) {
-        return option.getHorizontalLocation() == toastData.getOption().getLayoutOption().getHorizontalLocation()
-                && option.getVerticalLocation() == toastData.getOption().getLayoutOption().getVerticalLocation();
+    public boolean checkSameLayout(ToastLayoutOption layoutOption) {
+        ToastLayoutOption option = toastData.getOption().getLayoutOption();
+        if (option.getLocationSize() == null && layoutOption.getLocationSize() == null) {
+            return checkSameLayout(layoutOption.getLocation());
+        }
+        if (option.getLocationSize() != null && layoutOption.getLocationSize() != null) {
+            return option.getLocationSize().getX().floatValue() == layoutOption.getLocationSize().getX().floatValue()
+                    && option.getLocationSize().getY().floatValue() == layoutOption.getLocationSize().getY().floatValue();
+        }
+        return false;
+    }
+
+    public boolean checkSameLayout(ToastLocation location) {
+        return toastData.getOption().getLayoutOption().getLocation().isSame(location);
     }
 
     public static class ToastData {

@@ -118,7 +118,7 @@ public class ModalContainerLayer extends JLayeredPane {
         g.dispose();
 
         // paint drawer menu component that outside the contentPane to snapshot
-        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened() && drawerLayoutResponsive.isShowing()) {
+        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false && drawerLayoutResponsive.isShowing()) {
             drawEmbedComponent(snapshot);
         }
 
@@ -144,7 +144,7 @@ public class ModalContainerLayer extends JLayeredPane {
         };
         layeredSnapshot.setVisible(true);
         contentPane.setVisible(false);
-        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened()) {
+        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false) {
             drawerLayoutResponsive.getDrawerPanel().setVisible(false);
         }
         layeredSnapshot.add(componentSnapshot);
@@ -153,7 +153,7 @@ public class ModalContainerLayer extends JLayeredPane {
     protected void hideSnapshot() {
         layeredSnapshot.setVisible(false);
         rootPaneContainer.getContentPane().setVisible(true);
-        if (drawerLayoutResponsive != null && !drawerLayoutResponsive.isOpened()) {
+        if (drawerLayoutResponsive != null && drawerLayoutResponsive.isOpened() == false) {
             drawerLayoutResponsive.getDrawerPanel().setVisible(true);
         }
         layeredSnapshot.remove(componentSnapshot);

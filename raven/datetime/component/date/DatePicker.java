@@ -1,7 +1,28 @@
 package raven.datetime.component.date;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Point;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JToolBar;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.util.InputUtils;
 import raven.datetime.util.InputValidationListener;
@@ -9,14 +30,6 @@ import raven.datetime.util.Utils;
 import raven.swing.slider.PanelSlider;
 import raven.swing.slider.SimpleTransition;
 import raven.swing.slider.SliderTransition;
-
-import javax.swing.*;
-import java.awt.*;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatePicker extends JPanel {
 
@@ -698,7 +711,9 @@ public class DatePicker extends JPanel {
 
                 @Override
                 public boolean checkDateSelectionAble(LocalDate date) {
-                    if (dateSelection.getDateSelectionAble() == null) return true;
+                    if (dateSelection.getDateSelectionAble() == null) {
+						return true;
+					}
                     return dateSelection.getDateSelectionAble().isDateSelectedAble(date);
                 }
             };

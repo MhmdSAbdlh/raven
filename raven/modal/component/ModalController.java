@@ -44,8 +44,7 @@ public class ModalController extends JPanel {
     private Image snapshotsImage;
 
     private Stack<Modal> modalStack;
-    @SuppressWarnings("rawtypes")
-	private Consumer onBackAction;
+    private Consumer onBackAction;
 
     public ModalController(ModalContainerLayer modalContainerLayer, ModalContainer modalContainer, Option option) {
         this.modalContainerLayer = modalContainerLayer;
@@ -161,7 +160,7 @@ public class ModalController extends JPanel {
     }
 
     public void startAnimator(boolean show) {
-        if (option.isAnimationEnabled()) {
+        if (option.isAnimationEnabled() && (show == true || option.isAnimationOnClose())) {
             if (animator == null) {
                 animator = new Animator(option.getDuration(), new Animator.TimingTarget() {
                     @Override
@@ -318,8 +317,7 @@ public class ModalController extends JPanel {
         return modalContainerLayer;
     }
 
-    @SuppressWarnings("rawtypes")
-	private Consumer getOnBackAction() {
+    private Consumer getOnBackAction() {
         if (onBackAction == null) {
             onBackAction = o -> {
                 popModal();

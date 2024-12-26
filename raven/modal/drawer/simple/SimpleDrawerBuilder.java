@@ -6,7 +6,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.ScrollPaneConstants;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
@@ -64,7 +63,7 @@ public abstract class SimpleDrawerBuilder implements DrawerBuilder {
 
     protected JScrollPane createScroll(JComponent component) {
         JScrollPane scroll = new JScrollPane(component);
-        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         String background = FlatLafStyleUtils.getStyleValue(component, "background", "null");
         scroll.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:" + background);
@@ -142,8 +141,7 @@ public abstract class SimpleDrawerBuilder implements DrawerBuilder {
         drawerOpenChanged(isOpen);
     }
 
-    @Override
-	public void build(DrawerPanel drawerPanel) {
+    public void build(DrawerPanel drawerPanel) {
     }
 
     public void rebuildMenu() {

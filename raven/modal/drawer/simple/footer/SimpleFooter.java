@@ -61,19 +61,15 @@ public class SimpleFooter extends AbstractMenuElement {
     public void setSimpleFooterData(SimpleFooterData simpleFooterData) {
         this.simpleFooterData = simpleFooterData;
 
-        if (labelTitle != null) {
-			labelTitle.setText(simpleFooterData.getTitle());
-		}
-        if (labelDescription != null) {
-			labelDescription.setText(simpleFooterData.getDescription());
-		}
+        if (labelTitle != null)
+            labelTitle.setText(simpleFooterData.getTitle());
+        if (labelDescription != null)
+            labelDescription.setText(simpleFooterData.getDescription());
     }
 
     @Override
     protected void layoutOptionChanged(MenuOption.MenuOpenMode menuOpenMode) {
-        if (labelTitle == null || labelDescription == null) {
-			return;
-		}
+        if (labelTitle == null || labelDescription == null) return;
 
         if (menuOpenMode == MenuOption.MenuOpenMode.FULL) {
             labelTitle.setVisible(true);

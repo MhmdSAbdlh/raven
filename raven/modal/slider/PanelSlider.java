@@ -107,7 +107,7 @@ public class PanelSlider extends JLayeredPane {
 
     @Override
     public Color getBackground() {
-        if (!useSlideAsBackground || slideComponent == null) {
+        if (useSlideAsBackground == false || slideComponent == null) {
             return super.getBackground();
         }
         return slideComponent.getBackground();

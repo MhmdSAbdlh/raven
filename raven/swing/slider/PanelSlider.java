@@ -1,11 +1,16 @@
 package raven.swing.slider;
 
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.VolatileImage;
+
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.VolatileImage;
 
 public class PanelSlider extends JLayeredPane {
 

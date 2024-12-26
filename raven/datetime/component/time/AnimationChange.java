@@ -1,9 +1,9 @@
 package raven.datetime.component.time;
 
+import java.awt.Component;
+
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
-
-import java.awt.*;
 
 public class AnimationChange {
 

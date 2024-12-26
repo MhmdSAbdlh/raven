@@ -9,7 +9,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.JSlider;
+
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 public class SliderGradientUI extends BasicSliderUI {
@@ -48,7 +49,7 @@ public class SliderGradientUI extends BasicSliderUI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(new GradientPaint(trackRect.x, trackRect.y, sliderGradient.getColor1(), trackRect.width, trackRect.height, sliderGradient.getColor2()));
         int size = sliderGradient.getTrackSize();
-        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             int x = 0;
             int y = (trackRect.height - size) / 2;
             g2.fill(new RoundRectangle2D.Double(trackRect.x + x, trackRect.y + y, trackRect.width, size, size, size));

@@ -1,11 +1,6 @@
 package raven.datetime.util;
 
-import com.formdev.flatlaf.FlatClientProperties;
-
-import javax.swing.*;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
-import java.awt.*;
+import java.awt.Component;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,6 +14,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+
+import com.formdev.flatlaf.FlatClientProperties;
 
 public class InputUtils extends MaskFormatter {
 

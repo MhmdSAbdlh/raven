@@ -1,7 +1,13 @@
 package raven.datetime.util;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Window;
+
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 public class Utils {
 

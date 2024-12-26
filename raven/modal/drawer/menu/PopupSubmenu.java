@@ -116,7 +116,7 @@ public class PopupSubmenu {
         menuItem.addActionListener(e -> {
             MenuAction action = drawerMenu.runEvent(item, item.getIndex());
             if (action != null) {
-                if (!action.getConsume()) {
+                if (action.getConsume() == false) {
                     if (drawerMenu.isMenuAutoSelection(isMainItem)) {
                         drawerMenu.setMenuSelectedIndex(item.getIndex());
                     }
@@ -188,13 +188,11 @@ public class PopupSubmenu {
 
     private class MenuItem extends JMenuItem implements MainItem {
 
-        @SuppressWarnings("unused")
-		public Item getItem() {
+        public Item getItem() {
             return item;
         }
 
-        @SuppressWarnings("unused")
-		public boolean isMainItem() {
+        public boolean isMainItem() {
             return isMainItem;
         }
 

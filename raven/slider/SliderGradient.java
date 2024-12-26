@@ -1,6 +1,7 @@
 package raven.slider;
 
 import java.awt.Color;
+
 import javax.swing.JSlider;
 
 public class SliderGradient extends JSlider {

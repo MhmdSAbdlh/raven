@@ -1,12 +1,19 @@
 package raven.datetime.component.date;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import net.miginfocom.swing.MigLayout;
+import raven.datetime.component.date.PanelDateOptionLabel.Item;
 
 public class PanelDateOption extends JPanel {
 
@@ -32,8 +39,7 @@ public class PanelDateOption extends JPanel {
         }
         String layoutRowConstraints = "";
         List<PanelDateOptionLabel.Item> items = panelDateOptionLabel.getListItems();
-        for (int i = 0; i < items.size(); i++) {
-            PanelDateOptionLabel.Item item = items.get(i);
+        for (Item item : items) {
             add(createButton(item.getLabel(), item.getCallback()));
             if (item.getCallback() == null) {
                 layoutRowConstraints += "push";

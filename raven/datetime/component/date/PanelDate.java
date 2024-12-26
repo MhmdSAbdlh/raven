@@ -1,12 +1,17 @@
 package raven.datetime.component.date;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import net.miginfocom.swing.MigLayout;
 
 public class PanelDate extends JPanel {
 
@@ -70,7 +75,7 @@ public class PanelDate extends JPanel {
     }
 
     private JLabel createLabel(String text) {
-        JLabel label = new JLabel(text, JLabel.CENTER);
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten($Label.foreground,30%);" +
                 "[dark]foreground:darken($Label.foreground,30%)");
