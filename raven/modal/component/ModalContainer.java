@@ -1,29 +1,15 @@
 package raven.modal.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.util.ColorFunctions;
-import com.formdev.flatlaf.util.ScaledEmptyBorder;
-
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.UIScale;
 import raven.modal.layout.ModalLayout;
+import raven.modal.option.LayoutOption;
 import raven.modal.option.Option;
+import raven.modal.utils.ModalUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * @author Raven
@@ -38,27 +24,34 @@ public class ModalContainer extends JComponent {
         return modalLayout;
     }
 
+    public Component getOwner() {
+        return owner;
+    }
+
+    public Option getOption() {
+        return modalController.getOption();
+    }
+
     private final String id;
-    private ModalContainerLayer modalContainerLayer;
+    private final AbstractModalContainerLayer modalContainerLayer;
+    private final Component owner;
     private ModalController modalController;
     private MouseListener mouseListener;
     private ActionListener escapeAction;
     private ModalLayout modalLayout;
 
-    public ModalContainer(ModalContainerLayer modalContainerLayer, Option option, String id) {
+    public ModalContainer(AbstractModalContainerLayer modalContainerLayer, Component owner, Option option, String id) {
         this.modalContainerLayer = modalContainerLayer;
+        this.owner = owner;
         this.id = id;
         init(modalContainerLayer, option);
     }
 
-    private void init(ModalContainerLayer modalContainerLayer, Option option) {
-        setBorder(new ScaledEmptyBorder(option.getLayoutOption().getMargin()));
+    private void init(AbstractModalContainerLayer modalContainerLayer, Option option) {
         modalController = new ModalController(modalContainerLayer, this, option);
         modalLayout = new ModalLayout(modalController, option.getLayoutOption());
         setLayout(modalLayout);
-        installOption(option);
         add(modalController);
-        modalController.setComponentOrientation(modalContainerLayer.getComponentOrientation());
     }
 
     private void installOption(Option option) {
@@ -81,19 +74,37 @@ public class ModalContainer extends JComponent {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     if (hover && clickType == Option.BackgroundClickType.CLOSE_MODAL) {
-                        closeModal();
+                        modalController.closeModal();
                     }
                 }
             };
             addMouseListener(mouseListener);
         }
         if (option.isCloseOnPressedEscape()) {
-            escapeAction = e -> closeModal();
+            escapeAction = e -> modalController.closeModal();
             registerKeyboardAction(escapeAction, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
     }
 
-    private void uninstallOption() {
+    public void initModal(Modal modal) {
+        modalController.initModal(modal);
+    }
+
+    public void showModal() {
+        modalController.showModal();
+        modalContainerLayer.showContainer(true);
+        installOption(modalController.getOption());
+    }
+
+    public ModalController getController() {
+        return modalController;
+    }
+
+    public Point getControllerLocation() {
+        return modalController.getLocation();
+    }
+
+    protected void uninstallOption() {
         if (mouseListener != null) {
             removeMouseListener(mouseListener);
         }
@@ -102,91 +113,69 @@ public class ModalContainer extends JComponent {
         }
     }
 
-    public void addModal(Modal modal) {
-        modalController.addModal(modal);
-    }
-
-    public void pushModal(Modal modal) {
-        modalController.pushModal(modal);
-    }
-
-    public void popModal() {
-        modalController.popModal();
-    }
-
-    public void showModal() {
-        modalController.showModal();
-        modalContainerLayer.setVisible(true);
-    }
-
-    public void closeModal() {
-        if (modalController != null) {
-            modalController.closeModal();
-        }
-        uninstallOption();
-    }
-
-    public void close() {
-        if (modalController != null) {
-            modalController.close();
-        }
-        uninstallOption();
-    }
-
-    protected void showSnapshot() {
-        modalContainerLayer.showSnapshot();
-    }
-
-    protected void hideSnapshot() {
-        modalContainerLayer.hideSnapshot();
-    }
-
-    public ModalController getController() {
-        return modalController;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(getBackgroundColor());
-        float opacity = modalController.getOption().getOpacity() * modalController.getAnimated();
+        Option opt = modalController.getOption();
+        float opacity = opt.getOpacity();
+        if (opt.isHeavyWeight()) {
+            if (opt.getBackgroundClickType() == Option.BackgroundClickType.NONE) {
+                if (opacity != 0) {
+                    opacity = 0;
+                }
+            } else if (opt.getBackgroundClickType() != Option.BackgroundClickType.NONE && opacity == 0) {
+                opacity = 0.01f;
+            }
+        }
+        opacity = opacity * modalController.getAnimated();
         if (opacity > 1) {
             opacity = 1;
         } else if (opacity < 0) {
             opacity = 0;
         }
-        g2.setComposite(AlphaComposite.SrcOver.derive(opacity));
-        g2.fill(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
-        g2.dispose();
+        if (opacity > 0) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setColor(getBackgroundColor());
+            g2.setComposite(AlphaComposite.SrcOver.derive(opacity));
+            g2.fill(getBackgroundShape());
+            g2.dispose();
+        }
         super.paintComponent(g);
     }
 
-    protected Color getBackgroundColor() {
-        if (FlatLaf.isLafDark()) {
-            if (modalController.getOption().getBackgroundDark() != null) {
-                return modalController.getOption().getBackgroundDark();
-            } else {
-                return ColorFunctions.tint(getBackground(), 0.2f);
+    private Shape getBackgroundShape() {
+        LayoutOption layoutOption = modalController.getOption().getLayoutOption();
+        if (modalController.getOption().isHeavyWeight()
+                && layoutOption.isRelativeToOwner()
+                && layoutOption.getRelativeToOwnerType() == LayoutOption.RelativeToOwnerType.RELATIVE_BOUNDLESS
+                && !(owner instanceof RootPaneContainer)
+        ) {
+            Point location = SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), this);
+            Rectangle rec = new Rectangle(location, owner.getSize());
+            Insets padding = layoutOption.getBackgroundPadding();
+            if (!FlatUIUtils.isInsetsEmpty(padding)) {
+                rec = FlatUIUtils.subtractInsets(rec, UIScale.scale(padding));
             }
-        } else {
-            if (modalController.getOption().getBackgroundLight() != null) {
-                return modalController.getOption().getBackgroundLight();
-            } else {
-                return ColorFunctions.shade(getBackground(), 0.2f);
-            }
+            return rec;
         }
+        return new Rectangle(0, 0, getWidth(), getHeight());
+    }
+
+    protected Color getBackgroundColor() {
+        return ModalUtils.getBackgroundColor(modalController.getOption().getBackgroundDark(),
+                modalController.getOption().getBackgroundLight(),
+                getBackground());
     }
 
     public void checkLayerVisible() {
         if (isVisible()) {
-            modalContainerLayer.setVisible(true);
+            modalContainerLayer.showContainer(true);
         } else {
-            for (ModalContainer c : modalContainerLayer.getSetModalContainer()) {
+            for (ModalContainer c : modalContainerLayer.getContainers()) {
                 if (c != this) {
                     return;
                 }
             }
-            modalContainerLayer.setVisible(false);
+            modalContainerLayer.showContainer(false);
         }
     }
 

@@ -1,12 +1,8 @@
 package raven.modal.layout;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-
 import raven.modal.slider.PanelSlider;
+
+import java.awt.*;
 
 /**
  * @author Raven
@@ -107,8 +103,7 @@ public class AnimatedLayout extends CardLayout {
         if (com instanceof PanelSlider.PanelSnapshot) {
             return new Dimension(width, height);
         }
-        Dimension size = paneSliderLayoutSize.getComponentSize(parent, com);
-        return size;
+        return paneSliderLayoutSize.getComponentSize(parent, com);
     }
 
     public boolean isUpdateAble() {

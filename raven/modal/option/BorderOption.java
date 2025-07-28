@@ -1,14 +1,11 @@
 package raven.modal.option;
 
-import java.awt.Color;
-import java.awt.Insets;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import raven.modal.component.DropShadowBorder;
+import raven.modal.utils.ModalUtils;
 
 import javax.swing.border.Border;
-
-import com.formdev.flatlaf.ui.FlatUIUtils;
-
-import raven.modal.component.OutlineBorder;
-import raven.modal.utils.ModalUtils;
+import java.awt.*;
 
 /**
  * @author Raven
@@ -19,7 +16,7 @@ public class BorderOption {
         return new BorderOption();
     }
 
-    public float getRound() {
+    public int getRound() {
         return round;
     }
 
@@ -35,7 +32,7 @@ public class BorderOption {
         return shadowOpacity;
     }
 
-    public float getBorderWidth() {
+    public int getBorderWidth() {
         return borderWidth;
     }
 
@@ -43,7 +40,7 @@ public class BorderOption {
         return borderColor;
     }
 
-    private BorderOption(float round, Insets shadowSize, Color shadowColor, float shadowOpacity, float borderWidth, Color borderColor) {
+    private BorderOption(int round, Insets shadowSize, Color shadowColor, float shadowOpacity, int borderWidth, Color borderColor) {
         this.round = round;
         this.shadowSize = shadowSize;
         this.shadowColor = shadowColor;
@@ -55,14 +52,14 @@ public class BorderOption {
     public BorderOption() {
     }
 
-    private float round = 20;
+    private int round = 20;
     private Insets shadowSize = new Insets(0, 0, 0, 0);
     private Color shadowColor;
     private float shadowOpacity = -1;
-    private float borderWidth = 0;
+    private int borderWidth = 0;
     private Color borderColor;
 
-    public BorderOption setRound(float round) {
+    public BorderOption setRound(int round) {
         this.round = round;
         return this;
     }
@@ -93,7 +90,7 @@ public class BorderOption {
         return this;
     }
 
-    public BorderOption setBorderWidth(float borderWidth) {
+    public BorderOption setBorderWidth(int borderWidth) {
         this.borderWidth = borderWidth;
         return this;
     }
@@ -109,8 +106,7 @@ public class BorderOption {
     }
 
     public BorderOption copy() {
-        Insets newShadowSize = new Insets(shadowSize.top, shadowSize.left, shadowSize.bottom, shadowSize.right);
-        return new BorderOption(round, newShadowSize, shadowColor, shadowOpacity, borderWidth, borderColor);
+        return new BorderOption(round, ModalUtils.copyInsets(shadowSize), shadowColor, shadowOpacity, borderWidth, borderColor);
     }
 
     public boolean isBorderAble() {
@@ -119,7 +115,7 @@ public class BorderOption {
 
     public Border createBorder() {
         if (isBorderAble()) {
-            return new OutlineBorder(shadowSize, shadowOpacity, shadowColor, borderWidth, borderColor, round);
+            return new DropShadowBorder(shadowSize, shadowOpacity, shadowColor, borderWidth, borderColor, round);
         }
         return null;
     }
@@ -131,15 +127,15 @@ public class BorderOption {
             if (this == NONE) {
                 option.setShadowSize(0);
             } else if (this == SMALL) {
-                option.setShadowSize(new Insets(4, 4, 6, 6));
+                option.setShadowSize(new Insets(2, 5, 6, 5));
             } else if (this == MEDIUM) {
-                option.setShadowSize(new Insets(8, 8, 12, 12));
+                option.setShadowSize(new Insets(4, 7, 12, 7));
             } else if (this == LARGE) {
-                option.setShadowSize(new Insets(12, 12, 18, 18));
+                option.setShadowSize(new Insets(6, 9, 18, 9));
             } else if (this == EXTRA_LARGE) {
-                option.setShadowSize(new Insets(16, 16, 24, 24));
+                option.setShadowSize(new Insets(8, 13, 24, 13));
             } else {
-                option.setShadowSize(new Insets(20, 20, 30, 30));
+                option.setShadowSize(new Insets(10, 15, 30, 15));
             }
         }
     }

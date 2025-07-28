@@ -1,6 +1,6 @@
 package raven.modal.component;
 
-import java.awt.Component;
+import java.awt.*;
 
 /**
  * @author Raven
@@ -9,8 +9,7 @@ public interface ModalBorderAction {
 
     void doAction(int action);
 
-
-    public static ModalBorderAction getModalBorderAction(Component com) {
+    static ModalBorderAction getModalBorderAction(Component com) {
         if (com == null) {
             return null;
         }

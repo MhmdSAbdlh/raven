@@ -30,8 +30,12 @@ public class ReportManager {
 	public void compileReport() throws JRException {
 		reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/print/report_pay.jrxml"));
 	}
+	
+	public JasperReport getReport() {
+		return reportPay;
+	}
 
-	public void printReportPayment(ParameterReportPayment data) throws JRException {
+	public JasperPrint generateReportPayment(ParameterReportPayment data) throws JRException {
 		Map<String, Object> para = new HashMap<>();
 		para.put("staff", data.getStaff());
 		para.put("customer", data.getCustomer());
@@ -40,9 +44,13 @@ public class ReportManager {
 		para.put("hora", data.geHora());
 		para.put("fecha", data.getFecha());
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data.getFields());
-		JasperPrint print = JasperFillManager.fillReport(reportPay, para, dataSource);
-		view(print);
+        return JasperFillManager.fillReport(reportPay, para, dataSource);
 	}
+	
+	public void printReportPayment(ParameterReportPayment data) throws JRException {
+        JasperPrint print = generateReportPayment(data);
+        view(print); // Keep existing behavior (optional)
+    }
 
 	private void view(JasperPrint print) throws JRException {
 		JasperViewer.viewReport(print, false);

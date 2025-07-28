@@ -1,72 +1,52 @@
 package raven.modal.toast;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Shape;
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.ui.FlatDropShadowBorder;
 import com.formdev.flatlaf.ui.FlatEmptyBorder;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.ColorFunctions;
+import com.formdev.flatlaf.util.HiDPIUtils;
 import com.formdev.flatlaf.util.UIScale;
-
+import raven.modal.toast.option.ToastBorderStyle;
 import raven.modal.toast.option.ToastStyle;
+import raven.modal.utils.ModalUtils;
+
+import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Raven
  */
-class ToastBorder extends FlatEmptyBorder {
+public class ToastBorder extends FlatEmptyBorder {
 
-    private static int SHADOW_SIZE = 10;
-    private Border shadowBorder;
-    private Component component;
-    private ToastPanel.ToastData toastData;
+    private final ToastPanel.ToastData toastData;
 
-    protected ToastBorder(Component component, ToastPanel.ToastData toastData) {
-        super(SHADOW_SIZE, SHADOW_SIZE, SHADOW_SIZE, SHADOW_SIZE);
-        this.component = component;
+    public ToastBorder(ToastPanel.ToastData toastData) {
         this.toastData = toastData;
-        shadowBorder = new FlatDropShadowBorder(
-                UIManager.getColor("Popup.dropShadowColor"), SHADOW_SIZE,
-                FlatUIUtils.getUIFloat("Popup.dropShadowOpacity", 0.5f));
     }
 
     private Insets getStyleBorderInsets(Component c) {
-        ToastStyle style = toastData.getOption().getStyle();
-        if (style.getBorderType() != ToastStyle.BorderType.NONE) {
-            if (style.getBorderType() == ToastStyle.BorderType.OUTLINE) {
-                int line = UIScale.scale(style.getOutlineSize());
-                return new Insets(line, line, line, line);
-            } else {
-                int line = UIScale.scale(style.getLineSize());
-                boolean ltr = c.getComponentOrientation().isLeftToRight();
-                int top = 0;
-                int left = 0;
-                int bottom = 0;
-                int right = 0;
-                if ((style.getBorderType() == ToastStyle.BorderType.LEADING_LINE && ltr) || (style.getBorderType() == ToastStyle.BorderType.TRAILING_LINE && !ltr)) {
-                    left = line;
-                } else if ((style.getBorderType() == ToastStyle.BorderType.TRAILING_LINE && ltr) || (style.getBorderType() == ToastStyle.BorderType.LEADING_LINE && !ltr)) {
-                    right = line;
-                } else if (style.getBorderType() == ToastStyle.BorderType.TOP_LINE) {
-                    top = line;
-                } else {
-                    bottom = line;
-                }
-                return new Insets(top, left, bottom, right);
-            }
+        ToastBorderStyle style = toastData.getOption().getStyle().getBorderStyle();
+        ToastBorderStyle.BorderType borderType = style.getBorderType();
+        if (borderType == ToastBorderStyle.BorderType.NONE || borderType == ToastBorderStyle.BorderType.OUTLINE) {
+            return null;
         }
-        return null;
+        int line = UIScale.scale(style.getLineSize());
+        boolean ltr = c.getComponentOrientation().isLeftToRight();
+        int top = 0;
+        int left = 0;
+        int bottom = 0;
+        int right = 0;
+        if ((borderType == ToastBorderStyle.BorderType.LEADING_LINE && ltr) || (borderType == ToastBorderStyle.BorderType.TRAILING_LINE && !ltr)) {
+            left = line;
+        } else if ((borderType == ToastBorderStyle.BorderType.TRAILING_LINE && ltr) || (borderType == ToastBorderStyle.BorderType.LEADING_LINE && !ltr)) {
+            right = line;
+        } else if (borderType == ToastBorderStyle.BorderType.TOP_LINE) {
+            top = line;
+        } else {
+            bottom = line;
+        }
+        return new Insets(top, left, bottom, right);
     }
 
     @Override
@@ -81,57 +61,75 @@ class ToastBorder extends FlatEmptyBorder {
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        Graphics2D g2 = (Graphics2D) g.create();
+        HiDPIUtils.paintAtScale1x((Graphics2D) g, x, y, width, height, (g2d, x1, y1, w1, h1, scaleFactor) ->
+                paintImpl(c, g2d, x1, y1, w1, h1, scaleFactor));
+    }
+
+    private void paintImpl(Component c, Graphics2D g2d, int x, int y, int width, int height, double scaleFactor) {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
         try {
-            FlatUIUtils.setRenderingHints(g2);
-            if (shadowBorder != null) {
-                shadowBorder.paintBorder(c, g2, x, y, width, height);
-            }
+            FlatUIUtils.setRenderingHints(g);
 
             ToastStyle style = toastData.getOption().getStyle();
+            ToastBorderStyle borderStyle = style.getBorderStyle();
             boolean ltr = c.getComponentOrientation().isLeftToRight();
 
-            int s = (int) UIScale.scale(SHADOW_SIZE * 0.8f);
-            int bw = width - s * 2;
-            int bh = height - s * 2;
-            float arc = UIScale.scale(SHADOW_SIZE) / 2;
+            int lx = 0;
+            int ly = 0;
+            int bw = width;
+            int bh = height;
+            float innerRound = style.getBorderStyle().getRound() * 0.6f;
+            float arc;
+            if (ModalUtils.isShadowAndRoundBorderSupport()) {
+                arc = Math.min(scale(innerRound, scaleFactor), height) / 2f;
+            } else {
+                arc = 0;
+            }
 
             // create background style
             ToastPanel.ThemesData themesData = toastData.getThemes();
-            Color defaultColor = Color.decode(FlatLaf.isLafDark() ? themesData.getColors()[1] : themesData.getColors()[0]);
+            Color defaultColor = themesData.getColor();
             if (style.getBackgroundType() == ToastStyle.BackgroundType.GRADIENT) {
-                Color color = ColorFunctions.mix(defaultColor, component.getBackground(), 0.3f);
-                g2.setPaint(new GradientPaint(x, y, color, (x + width) * 0.8f, y, component.getBackground()));
+                Color color = ColorFunctions.mix(defaultColor, c.getBackground(), 0.3f);
+                float start = ltr ? 0 : (width) * 0.8f;
+                float end = ltr ? (width) * 0.8f : 0;
+                g.setPaint(new GradientPaint(start, 0, color, end, 0, c.getBackground()));
             } else {
-                g2.setColor(component.getBackground());
+                g.setColor(c.getBackground());
             }
-            Shape shapeBackground = FlatUIUtils.createRoundRectanglePath(s, s, bw, bh, arc, arc, arc, arc);
-            g2.fill(shapeBackground);
+            Shape shapeBackground = FlatUIUtils.createRoundRectanglePath(lx, ly, bw, bh, arc, arc, arc, arc);
+            g.fill(shapeBackground);
 
             // create border style
-            if (style.getBorderType() != ToastStyle.BorderType.NONE) {
-                Color color = ColorFunctions.mix(defaultColor, component.getBackground(), 0.6f);
-                g2.setColor(color);
-                if (style.getBorderType() == ToastStyle.BorderType.OUTLINE) {
-                    float lineWidth = UIScale.scale(style.getOutlineSize());
-                    g2.fill(FlatUIUtils.createRoundRectangle(s, s, bw, bh, lineWidth, arc, arc, arc, arc));
+            ToastBorderStyle.BorderType borderType = borderStyle.getBorderType();
+            if (borderType != ToastBorderStyle.BorderType.NONE && borderType != ToastBorderStyle.BorderType.OUTLINE) {
+                float lineWidth = scale(borderStyle.getLineSize(), scaleFactor);
+                Area area = new Area(shapeBackground);
+                if ((borderType == ToastBorderStyle.BorderType.LEADING_LINE && ltr) || borderType == ToastBorderStyle.BorderType.TRAILING_LINE && !ltr) {
+                    area.intersect(new Area(new Rectangle2D.Float(lx, ly, lineWidth, bh)));
+                } else if ((borderType == ToastBorderStyle.BorderType.TRAILING_LINE && ltr) || (borderType == ToastBorderStyle.BorderType.LEADING_LINE && !ltr)) {
+                    area.intersect(new Area(new Rectangle2D.Float(lx + bw - lineWidth, ly, lineWidth, bh)));
+                } else if (borderType == ToastBorderStyle.BorderType.TOP_LINE) {
+                    area.intersect(new Area(new Rectangle2D.Float(lx, ly, bw, lineWidth)));
                 } else {
-                    float lineWidth = UIScale.scale(style.getLineSize());
-                    Area area = new Area(shapeBackground);
-                    if ((style.getBorderType() == ToastStyle.BorderType.LEADING_LINE && ltr) || style.getBorderType() == ToastStyle.BorderType.TRAILING_LINE && !ltr) {
-                        area.intersect(new Area(new Rectangle2D.Float(s, s, lineWidth, bh)));
-                    } else if ((style.getBorderType() == ToastStyle.BorderType.TRAILING_LINE && ltr) || (style.getBorderType() == ToastStyle.BorderType.LEADING_LINE && !ltr)) {
-                        area.intersect(new Area(new Rectangle2D.Float(s + bw - lineWidth, s, lineWidth, bh)));
-                    } else if (style.getBorderType() == ToastStyle.BorderType.TOP_LINE) {
-                        area.intersect(new Area(new Rectangle2D.Float(s, s, bw, lineWidth)));
-                    } else {
-                        area.intersect(new Area(new Rectangle2D.Float(s, s + bh - lineWidth, bw, lineWidth)));
-                    }
-                    g2.fill(area);
+                    area.intersect(new Area(new Rectangle2D.Float(lx, ly + bh - lineWidth, bw, lineWidth)));
                 }
+                Color color = ColorFunctions.mix(defaultColor, c.getBackground(), 0.6f);
+                g.setColor(color);
+                g.fill(area);
             }
         } finally {
-            g2.dispose();
+            g.dispose();
         }
+        g2d.drawImage(image, x, y, null);
+    }
+
+    private int scale(int value, double scaleFactor) {
+        return (int) Math.ceil(UIScale.scale(value) * scaleFactor);
+    }
+
+    private float scale(float value, double scaleFactor) {
+        return (float) (UIScale.scale(value) * scaleFactor);
     }
 }

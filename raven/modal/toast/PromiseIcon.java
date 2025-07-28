@@ -1,21 +1,18 @@
 package raven.modal.toast;
 
-import java.awt.Component;
-import java.awt.Graphics;
-
-import javax.swing.Icon;
-import javax.swing.SwingUtilities;
-
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
 import com.formdev.flatlaf.util.UIScale;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Raven
  */
 public abstract class PromiseIcon implements Icon {
 
-    private final ToastPromise promise;
+    private final PromiseIconAction promise;
     private final int width;
     private final int height;
     private Animator animator;
@@ -23,7 +20,7 @@ public abstract class PromiseIcon implements Icon {
     private Component target;
     private boolean stopped;
 
-    public PromiseIcon(ToastPromise promise, int width, int height) {
+    public PromiseIcon(PromiseIconAction promise, int width, int height) {
         this.promise = promise;
         this.width = width;
         this.height = height;
@@ -58,7 +55,7 @@ public abstract class PromiseIcon implements Icon {
 
                 @Override
                 public void end() {
-                    if (!promise.isDone() && stopped == false) {
+                    if (!promise.isDone() && !stopped) {
                         SwingUtilities.invokeLater(() -> {
                             if (animator != null && !animator.isRunning()) {
                                 animator.start();
@@ -70,6 +67,10 @@ public abstract class PromiseIcon implements Icon {
             animator.setInterpolator(getAnimationInterpolator());
             animator.setResolution(getAnimationResolution());
         }
+        if (animator.isRunning()) {
+            animator.stop();
+        }
+        stopped = false;
         animator.start();
     }
 
@@ -98,5 +99,10 @@ public abstract class PromiseIcon implements Icon {
     @Override
     public int getIconHeight() {
         return UIScale.scale(height);
+    }
+
+    public interface PromiseIconAction {
+
+        boolean isDone();
     }
 }

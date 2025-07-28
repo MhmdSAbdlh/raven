@@ -1,16 +1,14 @@
 package raven.modal.drawer;
 
-import java.awt.Container;
-import java.awt.Rectangle;
-
 import com.formdev.flatlaf.util.UIScale;
-
 import raven.modal.component.ModalContainer;
 import raven.modal.drawer.menu.MenuOption;
 import raven.modal.drawer.simple.SimpleDrawerBuilder;
 import raven.modal.drawer.simple.SimpleDrawerLayoutOption;
 import raven.modal.layout.OptionLayoutUtils;
 import raven.modal.option.BorderOption;
+
+import java.awt.*;
 
 /**
  * This class for responsive, show and hide drawer
@@ -48,7 +46,7 @@ public class DrawerLayoutResponsive {
     }
 
     private ModalContainer modalContainer;
-    private DrawerPanel drawerPanel;
+    private final DrawerPanel drawerPanel;
     private boolean opened = true;
     private boolean showing = true;
 
@@ -93,7 +91,7 @@ public class DrawerLayoutResponsive {
     private boolean isUnsupportedCompactMenu(DrawerBuilder drawerBuilder) {
         if (drawerBuilder instanceof SimpleDrawerBuilder) {
             if (((SimpleDrawerBuilder) drawerBuilder).getSimpleMenuOption().getMenuOpenMode() == MenuOption.MenuOpenMode.COMPACT) {
-                if (isHorizontalDrawer() == false) {
+                if (!isHorizontalDrawer()) {
                     return true;
                 }
             }
@@ -114,13 +112,12 @@ public class DrawerLayoutResponsive {
     }
 
     public Rectangle getDrawerLayout(Container parent) {
-        return OptionLayoutUtils.getLayoutLocation(parent, drawerPanel, 1f, drawerPanel.getDrawerOption().getLayoutOption());
+        return OptionLayoutUtils.getLayoutLocation(parent, null, drawerPanel, 1f, drawerPanel.getDrawerOption().getLayoutOption());
     }
 
     public boolean isHorizontalDrawer() {
         SimpleDrawerLayoutOption layoutOption = (SimpleDrawerLayoutOption) drawerPanel.getDrawerOption().getLayoutOption();
-        boolean isHorizontal = layoutOption.getFullSize().getY().floatValue() == 1f;
-        return isHorizontal;
+        return layoutOption.getFullSize().getY().floatValue() == 1f;
     }
 
     public void revalidateDrawer() {

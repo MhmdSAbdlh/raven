@@ -1,9 +1,9 @@
 package raven.datetime.component.time;
 
-import java.awt.Component;
-
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
+
+import java.awt.*;
 
 public class AnimationChange {
 
@@ -25,14 +25,19 @@ public class AnimationChange {
         animator.setInterpolator(CubicBezierEasing.EASE);
     }
 
-    public void start(float angleTarget, float marginTarget) {
+    public void start(float angleTarget, float marginTarget, boolean animated) {
         if (angle != angleTarget || margin != marginTarget) {
             angleValue.set(angle, angleTarget);
             marginValue.set(margin, marginTarget);
             if (animator.isRunning()) {
                 animator.stop();
             }
-            animator.start();
+            if (animated) {
+                animator.start();
+            } else {
+                angle = angleValue.interpolate(1f);
+                margin = marginValue.interpolate(1f);
+            }
         }
     }
 
@@ -56,7 +61,7 @@ public class AnimationChange {
         return animator.isRunning();
     }
 
-    private class AnimationValue {
+    private static class AnimationValue {
 
         private float from;
         private float target;

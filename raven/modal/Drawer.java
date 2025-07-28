@@ -1,9 +1,5 @@
 package raven.modal;
 
-import java.awt.Component;
-
-import javax.swing.RootPaneContainer;
-
 import raven.modal.component.ModalContainer;
 import raven.modal.drawer.DrawerBuilder;
 import raven.modal.drawer.DrawerLayoutResponsive;
@@ -11,6 +7,9 @@ import raven.modal.drawer.DrawerPanel;
 import raven.modal.drawer.menu.MenuOption;
 import raven.modal.drawer.simple.SimpleDrawerBuilder;
 import raven.modal.option.Option;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Raven
@@ -73,7 +72,7 @@ public class Drawer {
         }
         if (!visible) {
             if (ModalDialog.isIdExist(DRAWER_ID)) {
-                ModalDialog.closeModalAsRemove(DRAWER_ID);
+                ModalDialog.closeModalImmediately(DRAWER_ID);
             }
         }
     }
@@ -121,5 +120,10 @@ public class Drawer {
     public static void setSelectedItemClass(Class<?> itemClass) {
         SimpleDrawerBuilder drawerBuilder = (SimpleDrawerBuilder) instance.drawerPanel.getDrawerBuilder();
         drawerBuilder.getDrawerMenu().setMenuSelectedClass(itemClass);
+    }
+
+    public static int[] getMenuIndexClass(Class<?> itemClass) {
+        SimpleDrawerBuilder drawerBuilder = (SimpleDrawerBuilder) instance.drawerPanel.getDrawerBuilder();
+        return drawerBuilder.getDrawerMenu().getMenuIndexClass(itemClass);
     }
 }

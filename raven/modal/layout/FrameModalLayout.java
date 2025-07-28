@@ -1,14 +1,9 @@
 package raven.modal.layout;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Rectangle;
-
 import raven.modal.drawer.DrawerLayoutResponsive;
 import raven.modal.drawer.DrawerPanel;
+
+import java.awt.*;
 
 /**
  * @author Raven
@@ -78,7 +73,7 @@ public class FrameModalLayout implements LayoutManager {
             if (drawerLayoutResponsive != null) {
                 boolean isHorizontalDrawer = drawerLayoutResponsive.isHorizontalDrawer();
                 boolean isOpen = drawerLayoutResponsive.check(parent, isHorizontalDrawer ? width : height);
-                if (isOpen || drawerLayoutResponsive.isShowing() == false) {
+                if (isOpen || !drawerLayoutResponsive.isShowing()) {
                     contentPane.setBounds(0, contentPane.getY(), width, height);
                     drawerLayoutResponsive.revalidateDrawer();
                 } else {

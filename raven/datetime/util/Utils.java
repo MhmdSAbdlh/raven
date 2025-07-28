@@ -1,29 +1,39 @@
 package raven.datetime.util;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Window;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.ColorFunctions;
+import com.formdev.flatlaf.util.UIScale;
 
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 public class Utils {
 
-    public static Point adjustPopupLocation(JPopupMenu popupMenu, Component component) {
+    public static Point adjustPopupLocation(JPopupMenu popupMenu, Component component, Point space) {
         Window window = SwingUtilities.getWindowAncestor(component);
-        Insets frameInsets = window.getInsets();
-        Dimension popupSize = popupMenu.getComponent().getPreferredSize();
         if (window == null) {
             return new Point(0, component.getHeight());
         }
+        Insets frameInsets = window.getInsets();
+        frameInsets = FlatUIUtils.addInsets(frameInsets, UIScale.scale(new Insets(5, 5, 5, 5)));
+        Dimension popupSize = popupMenu.getComponent().getPreferredSize();
         int frameWidth = window.getWidth() - (frameInsets.left + frameInsets.right);
         int frameHeight = window.getHeight() - (frameInsets.top + frameInsets.bottom);
         Point locationOnFrame = SwingUtilities.convertPoint(component, new Point(0, component.getHeight()), window);
-        int bottomSpace = frameHeight - locationOnFrame.y - popupSize.height;
-        int x = Math.max(Math.min(locationOnFrame.x, frameInsets.left + frameWidth - popupSize.width), frameInsets.left);
-        int y = frameInsets.top + bottomSpace > 0 ? locationOnFrame.y : Math.max(locationOnFrame.y - component.getHeight() - popupSize.height, frameInsets.top);
+        int bottomSpace = frameHeight - locationOnFrame.y - popupSize.height - space.y;
+        int rightSpace = frameWidth - locationOnFrame.x - popupSize.width - space.x;
+        int x = frameInsets.left + rightSpace > 0 ? locationOnFrame.x + space.x : Math.max(locationOnFrame.x + component.getWidth() - popupSize.width - space.x, frameInsets.left);
+        int y = frameInsets.top + bottomSpace > 0 ? locationOnFrame.y + space.y : Math.max(locationOnFrame.y - component.getHeight() - popupSize.height - space.y, frameInsets.top);
         return SwingUtilities.convertPoint(window, new Point(x, y), component);
+    }
+
+    public static Color getColor(Color color, boolean press, boolean hover) {
+        if (press) {
+            return FlatLaf.isLafDark() ? ColorFunctions.lighten(color, 0.1f) : ColorFunctions.darken(color, 0.1f);
+        } else if (hover) {
+            return FlatLaf.isLafDark() ? ColorFunctions.lighten(color, 0.03f) : ColorFunctions.darken(color, 0.03f);
+        }
+        return color;
     }
 }

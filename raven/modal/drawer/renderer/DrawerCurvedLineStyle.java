@@ -1,17 +1,12 @@
 package raven.modal.drawer.renderer;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import com.formdev.flatlaf.util.UIScale;
+import raven.modal.drawer.menu.AbstractMenuElement;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
-
-import javax.swing.JComponent;
-
-import com.formdev.flatlaf.util.UIScale;
-
-import raven.modal.drawer.menu.AbstractMenuElement;
 
 /**
  * This class for draw curved line style

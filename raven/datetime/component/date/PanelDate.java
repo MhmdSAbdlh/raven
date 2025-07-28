@@ -1,26 +1,22 @@
 package raven.datetime.component.date;
 
-import java.awt.Component;
+import com.formdev.flatlaf.FlatClientProperties;
+import net.miginfocom.swing.MigLayout;
+import raven.datetime.DatePicker;
+
+import javax.swing.*;
+import java.awt.*;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import com.formdev.flatlaf.FlatClientProperties;
-
-import net.miginfocom.swing.MigLayout;
-
 public class PanelDate extends JPanel {
 
-    private final DateSelection dateSelection;
+    private final DatePicker datePicker;
     private final int month;
     private final int year;
 
-    public PanelDate(DateSelection dateSelection, int month, int year) {
-        this.dateSelection = dateSelection;
+    public PanelDate(DatePicker datePicker, int month, int year) {
+        this.datePicker = datePicker;
         this.month = month;
         this.year = year;
         init();
@@ -28,12 +24,15 @@ public class PanelDate extends JPanel {
 
     private void init() {
         putClientProperty(FlatClientProperties.STYLE, "" +
-                "background:null");
-        setLayout(new MigLayout("novisualpadding,wrap 7,insets 3,gap 0,al center center", "fill", "[fill]10[fill][fill]"));
+                "background:null;");
+        setLayout(new MigLayout(
+                "novisualpadding,wrap 7,insets 3,gap 0,al center center",
+                "[fill]",
+                "[fill]10[fill][fill]"));
         load();
     }
 
-    protected void load() {
+    public void load() {
         removeAll();
         createDateHeader();
         final int col = 7;
@@ -41,15 +40,19 @@ public class PanelDate extends JPanel {
         final int t = col * row;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONDAY, month);
+        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DATE, 1);
-        int startDay = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        if (datePicker.isStartWeekOnMonday() && dayOfWeek == Calendar.SUNDAY) {
+            dayOfWeek = 8;
+        }
+        int startDay = dayOfWeek - (datePicker.isStartWeekOnMonday() ? 2 : 1);
         calendar.add(Calendar.DATE, -startDay);
         int rowIndex = 0;
         for (int i = 1; i <= t; i++) {
             SingleDate singleDate = new SingleDate(calendar);
-            boolean selectable = dateSelection.getDateSelectionAble() == null || dateSelection.getDateSelectionAble().isDateSelectedAble(singleDate.toLocalDate());
-            boolean enable = calendar.get(Calendar.MONDAY) == month && calendar.get(Calendar.YEAR) == year;
+            boolean selectable = datePicker.getDateSelectionModel().getDateSelectionAble() == null || datePicker.getDateSelectionModel().getDateSelectionAble().isDateSelectedAble(singleDate.toLocalDate());
+            boolean enable = calendar.get(Calendar.MONTH) == month && calendar.get(Calendar.YEAR) == year;
             JButton button = createButton(new SingleDate(calendar), enable, rowIndex);
             if (!selectable) {
                 button.setEnabled(false);
@@ -66,7 +69,18 @@ public class PanelDate extends JPanel {
     }
 
     protected void createDateHeader() {
-        String weekdays[] = DateFormatSymbols.getInstance().getShortWeekdays();
+        String[] weekdays = DatePicker.getDefaultWeekdays();
+        if (weekdays == null) {
+            weekdays = DateFormatSymbols.getInstance().getShortWeekdays();
+        }
+        // swap monday to the start day of week
+        if (datePicker.isStartWeekOnMonday()) {
+            String sunday = weekdays[1];
+            for (int i = 2; i < weekdays.length; i++) {
+                weekdays[i - 1] = weekdays[i];
+            }
+            weekdays[weekdays.length - 1] = sunday;
+        }
         for (String week : weekdays) {
             if (!week.isEmpty()) {
                 add(createLabel(week));
@@ -75,7 +89,7 @@ public class PanelDate extends JPanel {
     }
 
     private JLabel createLabel(String text) {
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        JLabel label = new JLabel(text, JLabel.CENTER);
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten($Label.foreground,30%);" +
                 "[dark]foreground:darken($Label.foreground,30%)");
@@ -83,22 +97,22 @@ public class PanelDate extends JPanel {
     }
 
     protected JButton createButton(SingleDate date, boolean enable, int rowIndex) {
-        ButtonDate button = new ButtonDate(dateSelection, date, enable, rowIndex);
+        ButtonDate button = new ButtonDate(datePicker, date, enable, rowIndex);
         if (button.isDateSelected()) {
             button.setSelected(true);
         }
         return button;
     }
 
-    protected void checkSelection() {
+    public void checkSelection() {
         for (int i = 0; i < getComponentCount(); i++) {
             Component com = getComponent(i);
             if (com instanceof ButtonDate) {
                 ButtonDate buttonDate = (ButtonDate) com;
-                if (dateSelection.dateSelectionMode == DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED) {
-                    buttonDate.setSelected(buttonDate.getDate().same(dateSelection.getDate()));
+                if (datePicker.getDateSelectionModel().getDateSelectionMode() == DatePicker.DateSelectionMode.SINGLE_DATE_SELECTED) {
+                    buttonDate.setSelected(buttonDate.getDate().same(datePicker.getDateSelectionModel().getDate()));
                 } else {
-                    buttonDate.setSelected(buttonDate.getDate().same(dateSelection.getDate()) || buttonDate.getDate().same(dateSelection.getToDate()));
+                    buttonDate.setSelected(buttonDate.getDate().same(datePicker.getDateSelectionModel().getDate()) || buttonDate.getDate().same(datePicker.getDateSelectionModel().getToDate()));
                 }
             }
         }

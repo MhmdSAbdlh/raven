@@ -1,21 +1,12 @@
 package raven.modal.slider;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.VolatileImage;
-
-import javax.swing.JComponent;
-import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
-
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
-
 import raven.modal.layout.AnimatedLayout;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.VolatileImage;
 
 /**
  * @author Raven
@@ -63,10 +54,18 @@ public class PanelSlider extends JLayeredPane {
     }
 
     public void addSlide(Component component, SliderTransition transition) {
-        addSlide(component, transition, 400);
+        addSlide(component, transition, 400, null);
+    }
+
+    public void addSlide(Component component, SliderTransition transition, SliderCallback callback) {
+        addSlide(component, transition, 400, callback);
     }
 
     public void addSlide(Component component, SliderTransition transition, int duration) {
+        addSlide(component, transition, duration, null);
+    }
+
+    public void addSlide(Component component, SliderTransition transition, int duration, SliderCallback callback) {
         this.slideComponent = component;
         if (getComponentCount() == 1) {
             add(component);
@@ -74,6 +73,9 @@ public class PanelSlider extends JLayeredPane {
             doLayout();
             panelSnapshot.setVisible(false);
             component.setVisible(true);
+            if (callback != null) {
+                callback.complete();
+            }
         } else {
             Component oldComponent = getComponent(1);
             add(component);
@@ -86,13 +88,16 @@ public class PanelSlider extends JLayeredPane {
                     Image oldImage = createImage(oldComponent, fromSize);
                     Image newImage = createImage(component, targetSize);
                     remove(oldComponent);
-                    panelSnapshot.animate(component, transition, oldImage, newImage, duration);
+                    panelSnapshot.animate(component, transition, oldImage, newImage, duration, callback);
                 });
             } else {
                 component.setVisible(true);
                 remove(oldComponent);
                 doLayout();
                 repaint();
+                if (callback != null) {
+                    callback.complete();
+                }
             }
         }
     }
@@ -107,7 +112,7 @@ public class PanelSlider extends JLayeredPane {
 
     @Override
     public Color getBackground() {
-        if (useSlideAsBackground == false || slideComponent == null) {
+        if (!useSlideAsBackground || slideComponent == null) {
             return super.getBackground();
         }
         return slideComponent.getBackground();
@@ -115,11 +120,19 @@ public class PanelSlider extends JLayeredPane {
 
     public interface PaneSliderLayoutSize {
         Dimension getComponentSize(Container container, Component component);
+
+        default void layoutUpdate() {
+        }
+    }
+
+    public interface SliderCallback {
+        void complete();
     }
 
     public class PanelSnapshot extends JComponent {
 
-        private Animator animator;
+        private final Animator animator;
+        private SliderCallback callback;
         private Component component;
         private float animate;
 
@@ -136,6 +149,7 @@ public class PanelSlider extends JLayeredPane {
                     animatedLayout.setAnimate(animate);
                     if (animatedLayout.isUpdateAble()) {
                         PanelSlider.this.revalidate();
+                        paneSliderLayoutSize.layoutUpdate();
                     }
                 }
 
@@ -154,15 +168,19 @@ public class PanelSlider extends JLayeredPane {
                     if (oldImage != null) {
                         oldImage.flush();
                     }
+                    if (callback != null) {
+                        callback.complete();
+                    }
                 }
             });
             animator.setInterpolator(CubicBezierEasing.STANDARD_EASING);
         }
 
-        protected void animate(Component component, SliderTransition sliderTransition, Image oldImage, Image newImage, int duration) {
+        protected void animate(Component component, SliderTransition sliderTransition, Image oldImage, Image newImage, int duration, SliderCallback callback) {
             if (animator.isRunning()) {
                 animator.stop();
             }
+            this.callback = callback;
             this.component = component;
             this.oldImage = oldImage;
             this.newImage = newImage;

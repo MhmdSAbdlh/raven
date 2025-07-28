@@ -1,22 +1,15 @@
 package raven.modal.layout;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.formdev.flatlaf.util.UIScale;
-
 import raven.modal.Toast;
 import raven.modal.option.LayoutOption;
 import raven.modal.toast.ToastPanel;
 import raven.modal.toast.option.ToastLayoutOption;
 import raven.modal.toast.option.ToastOption;
+
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Raven
@@ -60,13 +53,13 @@ public class ToastLayout implements LayoutManager {
                 if (component instanceof ToastPanel) {
                     ToastPanel toastPanel = (ToastPanel) component;
                     ToastOption option = toastPanel.getToastData().getOption();
-                    LayoutOption layoutOption = option.getLayoutOption().createLayoutOption();
-                    Rectangle rec = OptionLayoutUtils.getLayoutLocation(parent, toastPanel, toastPanel.getAnimate(), layoutOption);
-                    int index = i;
+                    LayoutOption layoutOption = option.getLayoutOption().createLayoutOption(parent, toastPanel.getOwner());
+                    float animate = toastPanel.getEasingAnimate();
+                    Rectangle rec = OptionLayoutUtils.getLayoutLocation(parent, null, toastPanel, animate, layoutOption);
                     int y = rec.y;
-                    if (index > 0) {
+                    if (i > 0) {
                         float ly = getLayoutY(parent, rec.getSize(), layoutOption);
-                        y = getY(components, toastPanel, option.getLayoutOption(), index, rec, baseMargin, ly, toastPanel.getAnimate());
+                        y = getY(components, toastPanel, option.getLayoutOption(), i, rec, baseMargin, ly, animate);
                     } else {
                         baseMargin = UIScale.scale(layoutOption.getMargin());
                     }
@@ -79,7 +72,7 @@ public class ToastLayout implements LayoutManager {
     private float getLayoutY(Container parent, Dimension comSize, LayoutOption layoutOption) {
         int insets = parent.getInsets().top + parent.getInsets().bottom + UIScale.scale(layoutOption.getMargin().top + layoutOption.getMargin().bottom);
         int height = parent.getHeight() - insets;
-        Point point = OptionLayoutUtils.location(0, height, comSize, layoutOption.getLocation());
+        Point point = OptionLayoutUtils.location(0, height, comSize, layoutOption.getLocation(), layoutOption.isOverflowAlignmentAuto());
         return point.y;
     }
 
@@ -88,22 +81,24 @@ public class ToastLayout implements LayoutManager {
         if (previousToast == null) {
             return rec.y;
         }
+        float previousAnimate = previousToast.getEasingAnimate();
         boolean isVerticalDirection = layoutOption.getDirection().isVerticalDirection();
         double y;
+        float gap = UIScale.scale((float) layoutOption.getGap()) * previousAnimate;
         if (layoutOption.getDirection().isToBottomDirection()) {
-            int h = previousToast.getHeight();
+            float h = previousToast.getHeight();
             if (!isVerticalDirection) {
-                h *= previousToast.getAnimate();
+                h *= previousAnimate;
             }
-            y = rec.y + previousToast.getY() + h - (baseMargin.top + ly);
+            y = rec.y + previousToast.getY() + h - (baseMargin.top + ly) + gap;
         } else {
             float h;
             if (!isVerticalDirection) {
-                h = rec.height - (previousToast.getHeight() * (1f - previousToast.getAnimate()));
+                h = rec.height - (previousToast.getHeight() * (1f - previousAnimate));
             } else {
                 h = rec.height * (animate);
             }
-            y = previousToast.getY() - h;
+            y = previousToast.getY() - h - gap;
         }
         return (int) y;
     }

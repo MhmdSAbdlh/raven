@@ -1,27 +1,18 @@
 package raven.modal.component;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.util.function.Consumer;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-
 import net.miginfocom.swing.MigLayout;
 import raven.modal.listener.ModalCallback;
 import raven.modal.listener.ModalController;
 import raven.modal.option.ModalBorderOption;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.function.Consumer;
+
 /**
- * This class contain with title and close button
- * And two action button, ok and close
+ * This class contain with title, action button options and close button
  *
  * @author Raven
  */
@@ -32,12 +23,11 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
 
     protected final ModalBorderOption option;
     protected final String title;
-    private final int optionType;
-    private Option[] optionsType;
+    private final Option[] optionsType;
     private final ModalCallback callback;
 
     // options
-    public static final int DEFAULT_OPTION = -1;
+    public static final int DEFAULT_OPTION = -2;
     public static final int YES_NO_OPTION = 0;
     public static final int YES_NO_CANCEL_OPTION = 1;
     public static final int OK_CANCEL_OPTION = 2;
@@ -63,7 +53,7 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
     }
 
     public SimpleModalBorder(Component component, String title, Option[] optionsType, ModalCallback callback) {
-        this(component, title, new ModalBorderOption(), -1, optionsType, callback);
+        this(component, title, new ModalBorderOption(), DEFAULT_OPTION, optionsType, callback);
     }
 
     public SimpleModalBorder(Component component, String title, ModalBorderOption option, int optionType, ModalCallback callback) {
@@ -71,16 +61,15 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
     }
 
     public SimpleModalBorder(Component component, String title, ModalBorderOption option, Option[] optionsType, ModalCallback callback) {
-        this(component, title, option, -1, optionsType, callback);
+        this(component, title, option, DEFAULT_OPTION, optionsType, callback);
     }
 
     private SimpleModalBorder(Component component, String title, ModalBorderOption option, int optionType, Option[] optionsType, ModalCallback callback) {
         this.component = component;
         this.option = option;
         this.title = title;
-        this.optionType = optionType;
         this.callback = callback;
-        if (optionType == -1) {
+        if (optionType == DEFAULT_OPTION) {
             this.optionsType = optionsType;
         } else {
             this.optionsType = createOptions(optionType);
@@ -93,7 +82,8 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
      */
     @Override
     public void installComponent() {
-        setLayout(new MigLayout("wrap,fillx,insets 18 0 18 0", "[fill]", "[][fill,grow][]"));
+        String insets = String.format("insets %d 0 %d 0", option.getPadding().top, option.getPadding().bottom);
+        setLayout(new MigLayout("wrap,fillx," + insets, "[fill]", "[][fill,grow][]"));
         header = createHeader();
         add(header);
         if (option.isUseScroll()) {
@@ -122,7 +112,8 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
     }
 
     protected JComponent createHeader() {
-        JPanel panel = new JPanel(new MigLayout("fill,insets 3 30 3 30"));
+        String insets = String.format("insets 0 %d 0 %d", option.getPadding().left, option.getPadding().right);
+        JPanel panel = new JPanel(new MigLayout("novisualpadding,fill," + insets));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null;");
         panel.add(createTitleComponent(title), "push");
@@ -157,7 +148,8 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
         if (optionsType == null || optionsType.length == 0) {
             return null;
         }
-        JPanel panel = new JPanel(new MigLayout("insets 3 30 3 30,al trailing"));
+        String insets = String.format("insets 3 %d 3 %d", option.getPadding().left, option.getPadding().right);
+        JPanel panel = new JPanel(new MigLayout(insets + ",al trailing"));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null;");
         for (Option option : optionsType) {
@@ -175,6 +167,8 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
             options = new Option[]{new Option("Yes", YES_OPTION), new Option("No", NO_OPTION), new Option("Cancel", CANCEL_OPTION)};
         } else if (optionType == OK_CANCEL_OPTION) {
             options = new Option[]{new Option("Ok", OK_OPTION), new Option("Cancel", CANCEL_OPTION)};
+        } else if (optionType == CLOSE_OPTION) {
+            options = new Option[]{new Option("Close", CLOSE_OPTION)};
         }
         return options;
     }
@@ -195,14 +189,14 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
         return button;
     }
 
-    protected void applyBackButton(Consumer onBack) {
+    protected void applyBackButton(Consumer<?> onBack) {
         Component backButton = createBackButton(onBack);
         if (header != null) {
             header.add(backButton, 0);
         }
     }
 
-    protected JComponent createBackButton(Consumer onBack) {
+    protected JComponent createBackButton(Consumer<?> onBack) {
         JButton buttonClose = new JButton(new FlatSVGIcon("raven/modal/icon/back.svg", 0.4f));
         buttonClose.setFocusable(false);
         buttonClose.addActionListener(e -> onBack.accept(null));
@@ -217,12 +211,13 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
     }
 
     private void checkOptionType(int type) {
-        if (type != DEFAULT_OPTION && type != YES_NO_OPTION && type != YES_NO_CANCEL_OPTION && type != OK_CANCEL_OPTION) {
+        if (type != DEFAULT_OPTION && type != YES_NO_OPTION && type != YES_NO_CANCEL_OPTION && type != OK_CANCEL_OPTION && type != CLOSE_OPTION) {
             throw new RuntimeException("SimpleModalBorder: option type must be one of" +
                     " SimpleModalBorder.DEFAULT_OPTION," +
                     " SimpleModalBorder.YES_NO_OPTION," +
-                    " SimpleModalBorder.YES_NO_CANCEL_OPTION" +
-                    " or SimpleModalBorder.OK_CANCEL_OPTION");
+                    " SimpleModalBorder.YES_NO_CANCEL_OPTION," +
+                    " SimpleModalBorder.OK_CANCEL_OPTION" +
+                    " or SimpleModalBorder.CLOSE_OPTION");
         }
     }
 
@@ -230,7 +225,7 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
         return new ModalController(this) {
             @Override
             public void close() {
-                getController().getModalContainer().closeModal();
+                getController().closeModal();
             }
         };
     }
@@ -246,12 +241,12 @@ public class SimpleModalBorder extends Modal implements ModalBorderAction {
     @Override
     public void doAction(int action) {
         if (callback == null) {
-            getController().getModalContainer().closeModal();
+            getController().closeModal();
         } else {
             ModalController controller = createController();
             callback.action(controller, action);
             if (!controller.getConsume()) {
-                getController().getModalContainer().closeModal();
+                getController().closeModal();
             }
         }
     }

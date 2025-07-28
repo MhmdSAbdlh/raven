@@ -1,23 +1,16 @@
 package raven.modal.drawer.menu;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-
 import com.formdev.flatlaf.ui.FlatPopupMenuBorder;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
-
-import raven.modal.drawer.data.Item;
+import raven.modal.drawer.item.Item;
 import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
 import raven.modal.utils.FlatLafStyleUtils;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import java.awt.*;
 
 /**
  * @author Raven
@@ -25,7 +18,7 @@ import raven.modal.utils.FlatLafStyleUtils;
 public class PopupSubmenu {
 
     private JPopupMenu popupMenu;
-    private DrawerMenu.SubMenuItem subMenuItem;
+    private final DrawerMenu.SubMenuItem subMenuItem;
     private final DrawerMenu drawerMenu;
     private final Item item;
 
@@ -55,7 +48,7 @@ public class PopupSubmenu {
         boolean isMainItem = true;
         Menu menu = new Menu(item, isMainItem);
         applyMenuEvent(menu, item, isMainItem);
-        defaultStyled(menu, ltr);
+        defaultStyled(menu, item.getIndex(), isMainItem, ltr);
         for (Item i : item.getSubMenu()) {
             if (i.isValidation()) {
                 if (i.isSubmenuAble()) {
@@ -72,17 +65,22 @@ public class PopupSubmenu {
         boolean isMainItem = false;
         MenuItem menuItem = new MenuItem(item, isMainItem);
         applyMenuEvent(menuItem, item, isMainItem);
-        defaultStyled(menuItem, ltr);
+        defaultStyled(menuItem, item.getIndex(), isMainItem, ltr);
         return menuItem;
     }
 
-    private void defaultStyled(JMenuItem menuItem, boolean ltr) {
+    private void defaultStyled(JMenuItem menuItem, int[] index, boolean isMainItem, boolean ltr) {
+        if (drawerMenu.getMenuOption().menuStyle != null) {
+            drawerMenu.getMenuOption().menuStyle.styleCompactMenuItem(menuItem, index, isMainItem);
+        }
         String insets = ltr ? "0,25,0,5" : "0,5,0,25";
+        Insets margin = new Insets(5, 10, 5, 10);
         FlatLafStyleUtils.appendStyleIfAbsent(menuItem, "" +
                 "selectionInsets:" + insets + ";" +
-                "margin:5,10,5,10;" +
                 "selectionArc:10;" +
                 "minimumWidth:170;");
+        FlatLafStyleUtils.appendStyle(menuItem, "" +
+                "margin:" + FlatLafStyleUtils.appendMargin(menuItem, margin));
     }
 
     private void applyBorder(JPopupMenu popupMenu) {
@@ -116,7 +114,7 @@ public class PopupSubmenu {
         menuItem.addActionListener(e -> {
             MenuAction action = drawerMenu.runEvent(item, item.getIndex());
             if (action != null) {
-                if (action.getConsume() == false) {
+                if (!action.getConsume()) {
                     if (drawerMenu.isMenuAutoSelection(isMainItem)) {
                         drawerMenu.setMenuSelectedIndex(item.getIndex());
                     }
@@ -146,7 +144,7 @@ public class PopupSubmenu {
                     int gap = UIScale.scale(12);
                     int x = ltr ? gap : width - gap;
                     int count = popupMenu.getComponentCount();
-                    int subMenuLocation[] = new int[count];
+                    int[] subMenuLocation = new int[count];
                     int selectedIndex = -1;
                     for (int i = 0; i < count; i++) {
                         Component com = popupMenu.getComponent(i);

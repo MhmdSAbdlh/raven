@@ -1,12 +1,14 @@
 package raven.modal.utils;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatStylingSupport;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-
-import javax.swing.JComponent;
-
-import com.formdev.flatlaf.FlatClientProperties;
 
 /**
  * @author Raven
@@ -44,12 +46,23 @@ public class FlatLafStyleUtils {
         return mapToString(newStyleMap);
     }
 
+    public static <T> T getStyleValue(JComponent com, String key, Class<T> type) {
+        Object style = FlatStylingSupport.getStyle(com);
+        if (style != null) {
+            Object value = FlatStylingSupport.parse(style.toString()).get(key);
+            if (type.isInstance(value)) {
+                return (T) value;
+            }
+        }
+        return null;
+    }
+
     public static Map<String, String> styleToMap(String style) {
         Map<String, String> mapStyle = new HashMap<>();
         if (style != null) {
-            String styles[] = style.split(";");
+            String[] styles = style.split(";");
             for (String s : styles) {
-                String parts[] = s.split(":");
+                String[] parts = s.split(":");
                 if (parts.length == 2) {
                     mapStyle.put(parts[0], parts[1]);
                 }
@@ -64,5 +77,13 @@ public class FlatLafStyleUtils {
             joiner.add(entry.getKey() + ":" + entry.getValue());
         }
         return joiner.toString();
+    }
+
+    public static String appendMargin(JComponent button, Insets margin) {
+        Insets defaultInset = FlatLafStyleUtils.getStyleValue(button, "margin", Insets.class);
+        if (defaultInset != null) {
+            margin = FlatUIUtils.addInsets(margin, defaultInset);
+        }
+        return margin.top + "," + margin.left + "," + margin.bottom + "," + margin.right;
     }
 }

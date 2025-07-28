@@ -1,27 +1,17 @@
 package raven.modal;
 
-import java.awt.Component;
-import java.awt.LayoutManager;
-import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JRootPane;
-import javax.swing.RootPaneContainer;
-import javax.swing.SwingUtilities;
-
-import raven.modal.component.Modal;
-import raven.modal.component.ModalContainer;
-import raven.modal.component.ModalContainerLayer;
+import raven.modal.component.*;
 import raven.modal.drawer.DrawerLayoutResponsive;
 import raven.modal.drawer.DrawerPanel;
 import raven.modal.layout.FrameModalLayout;
 import raven.modal.layout.FrameToastLayout;
 import raven.modal.option.Option;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @author Raven
@@ -30,7 +20,7 @@ public class ModalDialog {
 
     private static ModalDialog instance;
     private final Integer LAYER = JLayeredPane.MODAL_LAYER + 1;
-    private Map<RootPaneContainer, ModalContainerLayer> map;
+    private final Map<RootPaneContainer, ModalContainerLayer> map;
     private Option defaultOption;
 
     private ModalDialog() {
@@ -45,70 +35,68 @@ public class ModalDialog {
         return instance;
     }
 
-    public static void showModal(Component parentComponent, Modal modal) {
-        showModal(parentComponent, modal, getDefaultOption());
+    public static void showModal(Component owner, Modal modal) {
+        showModal(owner, modal, getDefaultOption());
     }
 
-    public static void showModal(Component parentComponent, Modal modal, String id) {
-        showModal(parentComponent, modal, getDefaultOption(), id);
+    public static void showModal(Component owner, Modal modal, String id) {
+        showModal(owner, modal, getDefaultOption(), id);
     }
 
-    public static void showModal(Component parentComponent, Modal modal, Option option) {
-        showModal(parentComponent, modal, option, null);
+    public static void showModal(Component owner, Modal modal, Option option) {
+        showModal(owner, modal, option, null);
     }
 
-    public static void showModal(Component parentComponent, Modal modal, Option option, String id) {
+    public static void showModal(Component owner, Modal modal, Option option, String id) {
         if (getInstance().isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         SwingUtilities.invokeLater(() -> {
-            ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(getRootPaneContainer(parentComponent));
-            modalContainerLayer.addModal(modal, option, id);
-            modalContainerLayer.repaint();
-            modalContainerLayer.revalidate();
+            // need copy if the option is the default option
+            Option copyOption = option == getDefaultOption() ? option.copy() : option;
+            boolean isHeavyWeight = copyOption.isHeavyWeight();
+            Component modelOwner = copyOption.getLayoutOption().isRelativeToOwner() ? owner : null;
+            getInstance().getModalContainer(owner, isHeavyWeight).addModal(modelOwner, modal, copyOption, id);
         });
     }
 
     public static void pushModal(Modal modal, String id) {
-        RootPaneContainer rootPaneContainer = getInstance().getRootPaneContainerById(id);
-        if (rootPaneContainer == null) {
-            throw new IllegalArgumentException("id '" + id + "' not found");
-        }
-        ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);
-        modalContainerLayer.pushModal(modal, id);
+        getInstance().getModalContainerById(id).pushModal(modal, id);
     }
 
     public static void popModel(String id) {
-        RootPaneContainer rootPaneContainer = getInstance().getRootPaneContainerById(id);
-        if (rootPaneContainer == null) {
-            throw new IllegalArgumentException("id '" + id + "' not found");
-        }
-        ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);
-        modalContainerLayer.popModal(id);
+        getInstance().getModalContainerById(id).popModal(id);
     }
 
     public static void closeModal(String id) {
-        RootPaneContainer rootPaneContainer = getInstance().getRootPaneContainerById(id);
-        if (rootPaneContainer == null) {
-            throw new IllegalArgumentException("id '" + id + "' not found");
-        }
-        ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);
-        modalContainerLayer.closeModal(id);
+        getInstance().getModalContainerById(id).closeModal(id);
     }
 
     public static void closeAllModal() {
-        for (Map.Entry<RootPaneContainer, ModalContainerLayer> entry : getInstance().map.entrySet()) {
-            entry.getValue().closeAllModal();
-        }
+        getInstance().map.values().forEach(con -> {
+            con.closeAllModal();
+        });
+        ModalHeavyWeight.getInstance().closeAllModal();
+    }
+
+    public static void closeModalImmediately(String id) {
+        getInstance().getModalContainerById(id).closeModalImmediately(id);
+    }
+
+    public static void closeAllModalImmediately() {
+        getInstance().map.values().forEach(con -> {
+            con.closeAllModalImmediately();
+        });
+        ModalHeavyWeight.getInstance().closeAllModalImmediately();
     }
 
     public static boolean isIdExist(String id) {
-        for (Map.Entry<RootPaneContainer, ModalContainerLayer> entry : getInstance().map.entrySet()) {
-            if (entry.getValue().checkId(id)) {
+        for (ModalContainerLayer con : getInstance().map.values()) {
+            if (con.checkId(id)) {
                 return true;
             }
         }
-        return false;
+        return ModalHeavyWeight.getInstance().isIdExist(id);
     }
 
     public static void setDefaultOption(Option option) {
@@ -139,17 +127,9 @@ public class ModalDialog {
         if (getInstance().isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
-        ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);
-        return modalContainerLayer.addModalWithoutShowing(modal, option, id);
-    }
-
-    protected static void closeModalAsRemove(String id) {
-        RootPaneContainer rootPaneContainer = getInstance().getRootPaneContainerById(id);
-        if (rootPaneContainer == null) {
-            throw new IllegalArgumentException("id '" + id + "' not found");
-        }
-        ModalContainerLayer modalContainerLayer = getInstance().getModalContainerLayered(rootPaneContainer);
-        modalContainerLayer.closeAsRemove(id);
+        boolean isHeavyWeight = option.isHeavyWeight();
+        Component modelOwner = option.getLayoutOption().isRelativeToOwner() ? rootPaneContainer.getRootPane() : null;
+        return getInstance().getModalContainer(rootPaneContainer.getRootPane(), isHeavyWeight).addModalWithoutShowing(modelOwner, modal, option, id);
     }
 
     protected static RootPaneContainer getRootPaneContainer(Component component) {
@@ -162,10 +142,10 @@ public class ModalDialog {
         return getRootPaneContainer(component.getParent());
     }
 
-    private RootPaneContainer getRootPaneContainerById(String id) {
-        for (Map.Entry<RootPaneContainer, ModalContainerLayer> entry : map.entrySet()) {
-            if (entry.getValue().checkId(id)) {
-                return entry.getKey();
+    private ModalContainerLayer getRootPaneContainerById(String id) {
+        for (ModalContainerLayer con : map.values()) {
+            if (con.checkId(id)) {
+                return con;
             }
         }
         return null;
@@ -186,7 +166,10 @@ public class ModalDialog {
             modalContainerLayer = createModalContainerLayered(rootPaneContainer);
 
             // add modal container layered to window layeredPane
-            windowLayeredPane.add(modalContainerLayer, LAYER);
+            windowLayeredPane.add(modalContainerLayer.getLayeredPane(), LAYER);
+
+            // init component orientation
+            modalContainerLayer.initComponentOrientation(rootPaneContainer.getRootPane().getComponentOrientation());
 
             // create snapshot layered
             Component snapshot = modalContainerLayer.createLayeredSnapshot();
@@ -194,7 +177,7 @@ public class ModalDialog {
             windowLayeredPane.add(snapshot, LAYER - 1);
 
             // set custom layout to window layeredPane
-            FrameModalLayout frameModalLayout = new FrameModalLayout(modalContainerLayer, rootPaneContainer.getContentPane(), snapshot);
+            FrameModalLayout frameModalLayout = new FrameModalLayout(modalContainerLayer.getLayeredPane(), rootPaneContainer.getContentPane(), snapshot);
             LayoutManager oldLayout = windowLayeredPane.getLayout();
             windowLayeredPane.setLayout(frameModalLayout);
             windowLayeredPane.doLayout();
@@ -208,55 +191,47 @@ public class ModalDialog {
             // store modal container layered to map
             map.put(rootPaneContainer, modalContainerLayer);
 
-            // install property to remove the root pane map after windows removed
-            modalContainerLayer.setPropertyData(installProperty(rootPaneContainer.getRootPane()));
+            // install property to windows
+            modalContainerLayer.installWindowListener();
         }
         return modalContainerLayer;
     }
 
-    private Object installProperty(JRootPane rootPane) {
-        PropertyChangeListener propertyChangeListener = e -> {
-            if (e.getNewValue() == null && e.getOldValue() instanceof RootPaneContainer) {
-                uninstall((RootPaneContainer) e.getOldValue());
-            }
-        };
-        rootPane.addPropertyChangeListener("ancestor", propertyChangeListener);
-        return propertyChangeListener;
-    }
-
-    private void uninstall(RootPaneContainer rootPaneContainer) {
-        if (map.containsKey(rootPaneContainer)) {
-            ModalContainerLayer modalContainerLayer = map.get(rootPaneContainer);
-            JLayeredPane windowLayeredPane = rootPaneContainer.getLayeredPane();
-            rootPaneContainer.getRootPane().removePropertyChangeListener("ancestor", (PropertyChangeListener) modalContainerLayer.getPropertyData());
-
-            // uninstall layout
-            LayoutManager oldLayout = windowLayeredPane.getLayout();
-            if (oldLayout != null) {
-                if (oldLayout instanceof FrameModalLayout) {
-                    FrameModalLayout frameModalLayout = (FrameModalLayout) oldLayout;
-                    if (frameModalLayout.getOldOtherComponentLayout() != null) {
-                        windowLayeredPane.setLayout(frameModalLayout.getOldOtherComponentLayout());
-                    } else {
-                        windowLayeredPane.setLayout(null);
-                    }
-                }
-            }
-
-            // remove
-            map.remove(rootPaneContainer);
-            windowLayeredPane.remove(modalContainerLayer);
-            Component componentSnapshot = modalContainerLayer.getComponentSnapshot();
-            if (componentSnapshot != null) {
-                windowLayeredPane.remove(modalContainerLayer.getComponentSnapshot());
-            }
-            modalContainerLayer.remove();
-        }
-    }
-
     private ModalContainerLayer createModalContainerLayered(RootPaneContainer rootPaneContainer) {
-        ModalContainerLayer layeredPane = new ModalContainerLayer(rootPaneContainer);
-        layeredPane.setVisible(false);
+        ModalContainerLayer layeredPane = new ModalContainerLayer(map, rootPaneContainer, createSnapshotChangedCallback());
+        layeredPane.getLayeredPane().setVisible(false);
         return layeredPane;
+    }
+
+    private BaseModalContainer getModalContainerById(String id) {
+        ModalContainerLayer modalContainer = getRootPaneContainerById(id);
+        if (modalContainer != null) {
+            return modalContainer;
+        }
+        ModalHeavyWeightContainerLayer modalHeavyWeight = ModalHeavyWeight.getInstance().getModalHeavyWeightContainerById(id);
+        if (modalHeavyWeight != null) {
+            return modalHeavyWeight;
+        }
+        throw new IllegalArgumentException("id '" + id + "' not found");
+    }
+
+    private BaseModalContainer getModalContainer(Component owner, boolean isHeavyWeight) {
+        if (isHeavyWeight) {
+            return ModalHeavyWeight.getInstance().getModalHeavyWeightContainer(owner);
+        }
+        return getModalContainerLayered(getRootPaneContainer(owner));
+    }
+
+    private Consumer<Boolean> createSnapshotChangedCallback() {
+        return show -> {
+            // modal
+            map.values().forEach(container -> container.setEnableHierarchy(show));
+
+            // heavyweight modal
+            ModalHeavyWeight.getInstance().setEnableHierarchy(show);
+
+            // toast
+            Toast.setEnableHierarchy(show);
+        };
     }
 }

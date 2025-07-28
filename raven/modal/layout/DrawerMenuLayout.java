@@ -1,21 +1,13 @@
 package raven.modal.layout;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
-
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
-
 import raven.modal.drawer.menu.AbstractMenuElement;
 import raven.modal.drawer.menu.MenuItemLayoutOption;
 import raven.modal.drawer.menu.MenuOption;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Raven

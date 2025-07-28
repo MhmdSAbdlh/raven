@@ -1,8 +1,8 @@
 package raven.modal.utils;
 
-import java.awt.Dimension;
-
 import com.formdev.flatlaf.util.UIScale;
+
+import java.awt.*;
 
 /**
  * @author Raven

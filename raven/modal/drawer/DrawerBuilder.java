@@ -1,8 +1,8 @@
 package raven.modal.drawer;
 
-import java.awt.Component;
-
 import raven.modal.option.Option;
+
+import java.awt.*;
 
 /**
  * @author Raven

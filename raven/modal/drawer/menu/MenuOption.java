@@ -1,13 +1,11 @@
 package raven.modal.drawer.menu;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import raven.modal.drawer.item.MenuItem;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.Icon;
-
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-
-import raven.modal.drawer.data.MenuItem;
 
 /**
  * @author Raven
@@ -18,15 +16,15 @@ public class MenuOption {
     protected MenuValidation menuValidation = new MenuValidation();
     protected MenuStyle menuStyle = new MenuStyle();
     protected MenuOpenMode menuOpenMode = MenuOpenMode.FULL;
-    protected MenuItem menus[];
-    protected float iconScale[] = {1f};
+    protected MenuItem[] menus;
+    protected float[] iconScale = {1f};
 
     protected String baseIconPath;
     protected MenuItemAutoSelectionMode menuItemAutoSelectionMode = MenuItemAutoSelectionMode.SELECT_ALL;
     protected MenuItemLayoutOption menuItemLayoutOption = MenuItemLayoutOption.getDefault(MenuOpenMode.FULL);
     protected MenuItemLayoutOption compactMenuItemLayoutOption = MenuItemLayoutOption.getDefault(MenuOpenMode.COMPACT);
 
-    public MenuOption setMenus(MenuItem menus[]) {
+    public MenuOption setMenus(MenuItem[] menus) {
         this.menus = menus;
         return this;
     }
@@ -72,12 +70,11 @@ public class MenuOption {
     }
 
     public Icon buildMenuIcon(String path, float scale) {
-        FlatSVGIcon icon = new FlatSVGIcon(path, scale);
-        return icon;
+        return new FlatSVGIcon(path, scale);
     }
 
     public MenuEvent[] getEvents() {
-        return events.toArray(new MenuEvent[events.size()]);
+        return events.toArray(new MenuEvent[0]);
     }
 
     public MenuValidation getMenuValidation() {

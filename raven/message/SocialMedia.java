@@ -2,8 +2,13 @@ package raven.message;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dialog;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URI;
@@ -13,6 +18,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.text.SimpleAttributeSet;
@@ -40,7 +46,7 @@ public class SocialMedia extends javax.swing.JDialog {
 	}
 
 	public SocialMedia(JFrame fram) {
-		super(fram, true);
+		super(fram, false);
 		this.fram = fram;
 		initComponents();
 		init();
@@ -79,6 +85,18 @@ public class SocialMedia extends javax.swing.JDialog {
 			}
 		});
 		glass = new Glass();
+		overlay.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Point mousePoint = e.getPoint();
+				SwingUtilities.convertPointToScreen(mousePoint, overlay); // Convert to screen coordinates
+
+				Rectangle dialogBounds = getBounds();
+				if (!dialogBounds.contains(mousePoint))
+					closeMessage();
+			}
+		});
+		setModalityType(Dialog.ModalityType.MODELESS);
 	}
 
 	public void showMessage(String title) {

@@ -1,19 +1,13 @@
 package raven.modal.drawer.renderer;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Path2D;
-
-import javax.swing.JComponent;
-import javax.swing.UIManager;
-
 import com.formdev.flatlaf.util.ColorFunctions;
 import com.formdev.flatlaf.util.UIScale;
-
 import raven.modal.drawer.menu.AbstractMenuElement;
 import raven.modal.drawer.menu.MenuOption;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Path2D;
 
 /**
  * @author Raven
@@ -40,7 +34,7 @@ public abstract class AbstractDrawerLineStyleRenderer {
             int y = (height - arrowHeight) / 2;
             Path2D p = new Path2D.Double();
             p.moveTo(0, animate * arrowHeight);
-            p.lineTo(arrowWidth / 2, (1f - animate) * arrowHeight);
+            p.lineTo(arrowWidth / 2f, (1f - animate) * arrowHeight);
             p.lineTo(arrowWidth, animate * arrowHeight);
             g2.translate(x, y);
             g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -68,8 +62,7 @@ public abstract class AbstractDrawerLineStyleRenderer {
             return UIManager.getColor("Component.accentColor");
         }
         Component com = component.getComponentCount() > 0 ? component.getComponent(0) : component;
-        Color color = ColorFunctions.mix(component.getBackground(), com.getForeground(), 0.7f);
-        return color;
+        return ColorFunctions.mix(component.getBackground(), com.getForeground(), 0.7f);
     }
 
     public Color getLineColor() {

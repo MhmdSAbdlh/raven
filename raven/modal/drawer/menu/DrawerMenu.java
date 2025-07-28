@@ -1,30 +1,17 @@
 package raven.modal.drawer.menu;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.util.Arrays;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
-
-import raven.modal.drawer.data.Item;
-import raven.modal.drawer.data.MenuItem;
+import raven.modal.drawer.item.Item;
+import raven.modal.drawer.item.MenuItem;
 import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
 import raven.modal.layout.DrawerMenuLayout;
+import raven.modal.utils.CustomAnimation;
 import raven.modal.utils.FlatLafStyleUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
 
 /**
  * @author Raven
@@ -53,10 +40,9 @@ public class DrawerMenu extends AbstractMenuElement {
             if (item.isMenu()) {
                 Item t = getMenuItemOf((Item) item, itemClass);
                 if (t != null) {
-                    setMenuSelectedIndex(t.getIndex());
                     MenuAction action = runEvent(t, t.getIndex());
                     if (action != null) {
-                        if (action.getConsume() == false) {
+                        if (!action.getConsume()) {
                             if (isMenuAutoSelection(t.isMenu())) {
                                 setMenuSelectedIndex(t.getIndex());
                             }
@@ -66,6 +52,21 @@ public class DrawerMenu extends AbstractMenuElement {
                 }
             }
         }
+    }
+
+    public int[] getMenuIndexClass(Class<?> itemClass) {
+        if (itemClass == null) {
+            return null;
+        }
+        for (MenuItem item : menuOption.menus) {
+            if (item.isMenu()) {
+                Item t = getMenuItemOf((Item) item, itemClass);
+                if (t != null) {
+                    return t.getIndex();
+                }
+            }
+        }
+        return null;
     }
 
     private Item getMenuItemOf(Item item, Class<?> itemClass) {
@@ -263,8 +264,7 @@ public class DrawerMenu extends AbstractMenuElement {
             } else {
                 iconScale = menuOption.iconScale[menuOption.iconScale.length - 1];
             }
-            Icon iconObject = menuOption.buildMenuIcon(path + icon, iconScale);
-            return iconObject;
+            return menuOption.buildMenuIcon(path + icon, iconScale);
         } else {
             return null;
         }
@@ -280,14 +280,16 @@ public class DrawerMenu extends AbstractMenuElement {
         if (menuOption.menuStyle != null) {
             menuOption.menuStyle.styleMenuItem(button, copyArray(index), isMainItem);
         }
+        Insets margin = new Insets(7, menuItemPadding, 7, menuItemPadding);
         FlatLafStyleUtils.appendStyleIfAbsent(button, "" +
                 "arc:15;" +
-                "margin:6," + menuItemPadding + ",6," + menuItemPadding + ";" +
                 "borderWidth:0;" +
                 "focusWidth:0;" +
                 "innerFocusWidth:0;" +
                 "background:null;" +
                 "iconTextGap:" + iconTextGap + ";");
+        FlatLafStyleUtils.appendStyle(button, "" +
+                "margin:" + FlatLafStyleUtils.appendMargin(button, margin));
         applySelectedButtonStyle(button);
         return button;
     }
@@ -296,7 +298,7 @@ public class DrawerMenu extends AbstractMenuElement {
         button.addActionListener(e -> {
             MenuAction action = runEvent(button.getItem(), index);
             if (action != null) {
-                if (action.getConsume() == false) {
+                if (!action.getConsume()) {
                     if (isMenuAutoSelection(button.isMainItem())) {
                         menuSelectedIndex = index;
                         repaint();
@@ -335,8 +337,7 @@ public class DrawerMenu extends AbstractMenuElement {
     }
 
     protected Component createSubmenuItem(Item menu, int[] index, int[] validationIndex, int menuLevel, int iconTextGap) {
-        JPanel panelItem = new SubMenuItem(menu, index, validationIndex, menuLevel, iconTextGap);
-        return panelItem;
+        return new SubMenuItem(menu, index, validationIndex, menuLevel, iconTextGap);
     }
 
     protected boolean checkLabelValidation(int labelIndex, int menuIndex) {
@@ -411,7 +412,7 @@ public class DrawerMenu extends AbstractMenuElement {
             return isMainItem;
         }
 
-        private Item item;
+        private final Item item;
         private final int[] itemIndex;
         private final boolean isMainItem;
 
@@ -428,9 +429,9 @@ public class DrawerMenu extends AbstractMenuElement {
         }
     }
 
-    protected class SubMenuItem extends JPanel {
+    public class SubMenuItem extends JPanel {
 
-        private int menuLevel;
+        private final int menuLevel;
         private int iconTextGap;
         private int levelSpace = 13;
         private int submenuSpace = 5;
@@ -440,6 +441,7 @@ public class DrawerMenu extends AbstractMenuElement {
         private final int[] index;
         private final int[] validationIndex;
         private int iconWidth;
+        private CustomAnimation animation;
 
         public void setAnimate(float animate) {
             menuLayout.setAnimate(animate);
@@ -528,7 +530,10 @@ public class DrawerMenu extends AbstractMenuElement {
             button.addActionListener(e -> {
                 if (getMenuOpenMode() == MenuOption.MenuOpenMode.FULL) {
                     menuShow = !menuShow;
-                    new MenuAnimation(this).run(menuShow);
+                    if (animation == null) {
+                        animation = new CustomAnimation(f -> setAnimate(f));
+                    }
+                    animation.run(menuShow);
                 } else {
                     new PopupSubmenu(DrawerMenu.this, this, menu).show(button);
                 }
@@ -542,14 +547,16 @@ public class DrawerMenu extends AbstractMenuElement {
                 menuOption.menuStyle.styleMenuItem(button, copyArray(index), isMainItem);
             }
             boolean isRightToLeft = !DrawerMenu.this.getComponentOrientation().isLeftToRight();
-            String margin = isRightToLeft ? ("7," + menuItemPadding + ",7," + (gap + menuItemPadding)) : ("7," + (gap + menuItemPadding) + ",7," + menuItemPadding);
+            Insets margin = isRightToLeft ? new Insets(7, menuItemPadding, 7, gap + menuItemPadding)
+                    : new Insets(7, gap + menuItemPadding, 7, menuItemPadding);
             FlatLafStyleUtils.appendStyleIfAbsent(button, "" +
                     "arc:15;" +
-                    "margin:" + margin + ";" +
                     "borderWidth:0;" +
                     "focusWidth:0;" +
                     "innerFocusWidth:0;" +
                     "background:null;");
+            FlatLafStyleUtils.appendStyle(button, "" +
+                    "margin:" + FlatLafStyleUtils.appendMargin(button, margin) + ";");
             applySelectedButtonStyle(button);
             return button;
         }
@@ -572,7 +579,7 @@ public class DrawerMenu extends AbstractMenuElement {
                         int gap = UIScale.scale((menuItemPadding + (iconWidth / 2)) + ((levelSpace + submenuSpace - 5) * menuLevel));
                         int x = ltr ? gap : width - gap;
                         int count = getComponentCount();
-                        int subMenuLocation[] = new int[count - 1];
+                        int[] subMenuLocation = new int[count - 1];
                         int selectedIndex = -1;
                         for (int i = 1; i < count; i++) {
                             Component com = getComponent(i);

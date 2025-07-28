@@ -1,13 +1,9 @@
 package raven.modal.drawer.menu;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-
-import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
 import raven.modal.drawer.renderer.DrawerCurvedLineStyle;
+import raven.modal.drawer.renderer.AbstractDrawerLineStyleRenderer;
+
+import javax.swing.*;
 
 /**
  * @author Raven
@@ -31,6 +27,9 @@ public class MenuStyle {
     }
 
     public void styleMenuItem(JButton menu, int[] index, boolean isMainItem) {
+    }
+
+    public void styleCompactMenuItem(JMenuItem menu, int[] index, boolean isMainItem) {
     }
 
     public void styleLabel(JLabel label) {
