@@ -1,6 +1,6 @@
 package raven.extras;
 
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -10,7 +10,7 @@ import java.awt.geom.GeneralPath;
  * @author Raven
  */
 public class SuperEllipse2D {
-    private double x, y, width, height, eccentricity;
+    private final double x, y, width, height, eccentricity;
 
     private GeneralPath path;
 

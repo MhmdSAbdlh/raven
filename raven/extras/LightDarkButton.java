@@ -1,31 +1,19 @@
 package raven.extras;
 
-import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.util.LoggingFacade;
-
 import net.miginfocom.swing.MigLayout;
 import raven.modal.utils.FlatLafStyleUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Raven
@@ -52,15 +40,9 @@ public class LightDarkButton extends JPanel {
     public void updateUI() {
         super.updateUI();
 
-        if (buttonLight != null) {
-			buttonLight.updateUI();
-		}
-        if (buttonDark != null) {
-			buttonDark.updateUI();
-		}
-        if (buttonLightDark != null) {
-			buttonLightDark.updateUI();
-		}
+        if (buttonLight != null) buttonLight.updateUI();
+        if (buttonDark != null) buttonDark.updateUI();
+        if (buttonLightDark != null) buttonLightDark.updateUI();
     }
 
     public LightDarkButton() {
@@ -273,9 +255,8 @@ public class LightDarkButton extends JPanel {
         });
         addModeChangeListener(isDarkMode -> {
             String lafClassName = getLookAndFeelChanged(UIManager.getLookAndFeel(), isDarkMode);
-            if (lafClassName != null) {
-				lookAndFeelChanged(lafClassName);
-			}
+            if (lafClassName != null)
+                lookAndFeelChanged(lafClassName);
         });
     }
 
@@ -365,7 +346,7 @@ public class LightDarkButton extends JPanel {
         void onModeChanged(boolean isDarkMode);
     }
 
-    public class LookAndFeelLightDark {
+    public static class LookAndFeelLightDark {
 
         public Class<? extends FlatLaf> getLight() {
             return light;

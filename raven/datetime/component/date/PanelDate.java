@@ -6,7 +6,6 @@ import raven.datetime.DatePicker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 public class PanelDate extends JPanel {
@@ -70,9 +69,6 @@ public class PanelDate extends JPanel {
 
     protected void createDateHeader() {
         String[] weekdays = DatePicker.getDefaultWeekdays();
-        if (weekdays == null) {
-            weekdays = DateFormatSymbols.getInstance().getShortWeekdays();
-        }
         // swap monday to the start day of week
         if (datePicker.isStartWeekOnMonday()) {
             String sunday = weekdays[1];

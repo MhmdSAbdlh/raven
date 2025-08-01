@@ -1,13 +1,13 @@
 package raven.datetime.component.date;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
+import raven.datetime.DatePicker;
 import raven.datetime.component.date.event.DateControlEvent;
 import raven.datetime.component.date.event.DateControlListener;
+import raven.datetime.util.Utils;
 
 import javax.swing.*;
-import java.text.DateFormatSymbols;
 
 public class Header extends JPanel {
 
@@ -67,11 +67,11 @@ public class Header extends JPanel {
     }
 
     protected Icon createDefaultBackIcon() {
-        return new FlatSVGIcon("raven/datetime/icon/back.svg");
+        return Utils.createIcon("raven/datetime/icon/back.svg", 1f);
     }
 
     protected Icon createDefaultForwardIcon() {
-        return new FlatSVGIcon("raven/datetime/icon/forward.svg");
+        return Utils.createIcon("raven/datetime/icon/forward.svg", 1f);
     }
 
     public void addDateControlListener(DateControlListener listener) {
@@ -92,7 +92,7 @@ public class Header extends JPanel {
     }
 
     public void setDate(int month, int year) {
-        buttonMonth.setText(DateFormatSymbols.getInstance().getMonths()[month]);
+        buttonMonth.setText(DatePicker.getDefaultMonths()[month]);
         buttonYear.setText(year + "");
     }
 

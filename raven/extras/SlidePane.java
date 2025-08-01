@@ -1,8 +1,8 @@
 package raven.extras;
 
-import java.awt.Component;
-
 import raven.modal.slider.PanelSlider;
+
+import java.awt.*;
 
 /**
  * @author Raven

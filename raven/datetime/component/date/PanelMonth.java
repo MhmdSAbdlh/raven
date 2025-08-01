@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.text.DateFormatSymbols;
 
 public class PanelMonth extends JPanel {
 
@@ -34,7 +33,7 @@ public class PanelMonth extends JPanel {
         for (int i = 0; i < count; i++) {
             final int month = i;
             ButtonMonthYear button = new ButtonMonthYear(datePicker, i);
-            button.setText(DateFormatSymbols.getInstance().getMonths()[i]);
+            button.setText(DatePicker.getDefaultMonths()[i]);
             if (checkSelected(month + 1)) {
                 button.setSelected(true);
             }
