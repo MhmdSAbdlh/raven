@@ -186,11 +186,13 @@ public class PopupSubmenu {
 
     private class MenuItem extends JMenuItem implements MainItem {
 
-        public Item getItem() {
+        @SuppressWarnings("unused")
+		public Item getItem() {
             return item;
         }
 
-        public boolean isMainItem() {
+        @SuppressWarnings("unused")
+		public boolean isMainItem() {
             return isMainItem;
         }
 

@@ -13,11 +13,11 @@ public class FieldReportPayment {
 	public FieldReportPayment() {
 	}
 
-	public FieldReportPayment(String name, int qty, double price, double total) {
+	public FieldReportPayment(String name, int qty, double price) {
 		this.name = name;
 		this.qty = qty;
 		this.price = price;
-		this.total = total;
+		this.total = qty * price;
 	}
 
 	public String getName() {
@@ -47,9 +47,4 @@ public class FieldReportPayment {
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
-
-	public void setTotal(double total) {
-		this.total = total;
-	}
-
 }

@@ -48,7 +48,8 @@ public class ModalDialog {
     }
 
     public static void showModal(Component owner, Modal modal, Option option, String id) {
-        if (getInstance().isIdExist(id)) {
+        getInstance();
+		if (ModalDialog.isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         SwingUtilities.invokeLater(() -> {
@@ -124,7 +125,8 @@ public class ModalDialog {
     }
 
     protected static ModalContainer showDrawer(RootPaneContainer rootPaneContainer, Modal modal, Option option, String id) {
-        if (getInstance().isIdExist(id)) {
+        getInstance();
+		if (ModalDialog.isIdExist(id)) {
             throw new IllegalArgumentException("id '" + id + "' already exist");
         }
         boolean isHeavyWeight = option.isHeavyWeight();

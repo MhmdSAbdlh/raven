@@ -54,7 +54,8 @@ public class CustomAnimation {
         return animator;
     }
 
-    private float getFraction() {
+    @SuppressWarnings("unused")
+	private float getFraction() {
         return fraction;
     }
 

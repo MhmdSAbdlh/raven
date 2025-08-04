@@ -1,5 +1,9 @@
 package print;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,27 +34,42 @@ public class ReportManager {
 	public void compileReport() throws JRException {
 		reportPay = JasperCompileManager.compileReport(getClass().getResourceAsStream("/print/report_pay.jrxml"));
 	}
-	
+
 	public JasperReport getReport() {
 		return reportPay;
 	}
 
 	public JasperPrint generateReportPayment(ParameterReportPayment data) throws JRException {
 		Map<String, Object> para = new HashMap<>();
-		para.put("staff", data.getStaff());
-		para.put("customer", data.getCustomer());
+		para.put("clientName", data.getClientName());
+		para.put("clientID", data.getClienntID());
+		para.put("sellerName", data.getSellerName());
 		para.put("total", data.getTotal());
 		para.put("totalR", data.getTotalR());
 		para.put("hora", data.geHora());
 		para.put("fecha", data.getFecha());
+		para.put("qrcode", data.getQrcode());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date parsed;
+		String vencimiento = "";
+		try {
+			parsed = sdf.parse(data.getFecha());
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(parsed);
+			cal.add(Calendar.YEAR, 1);
+			vencimiento = sdf.format(cal.getTime());
+		} catch (ParseException e) {
+		}
+
+		para.put("vencimiento", vencimiento);
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data.getFields());
-        return JasperFillManager.fillReport(reportPay, para, dataSource);
+		return JasperFillManager.fillReport(reportPay, para, dataSource);
 	}
-	
+
 	public void printReportPayment(ParameterReportPayment data) throws JRException {
-        JasperPrint print = generateReportPayment(data);
-        view(print); // Keep existing behavior (optional)
-    }
+		JasperPrint print = generateReportPayment(data);
+		view(print); // Keep existing behavior (optional)
+	}
 
 	private void view(JasperPrint print) throws JRException {
 		JasperViewer.viewReport(print, false);

@@ -46,7 +46,8 @@ public class FlatLafStyleUtils {
         return mapToString(newStyleMap);
     }
 
-    public static <T> T getStyleValue(JComponent com, String key, Class<T> type) {
+    @SuppressWarnings("unchecked")
+	public static <T> T getStyleValue(JComponent com, String key, Class<T> type) {
         Object style = FlatStylingSupport.getStyle(com);
         if (style != null) {
             Object value = FlatStylingSupport.parse(style.toString()).get(key);

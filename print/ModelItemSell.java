@@ -17,12 +17,12 @@ public class ModelItemSell {
 	public ModelItemSell() {
 	}
 
-	public ModelItemSell(int productId, String productName, int qty, double price, double total) {
+	public ModelItemSell(int productId, String productName, int qty, double price) {
 		this.productId = productId;
 		this.productName = productName;
 		this.qty = qty;
 		this.price = price;
-		this.total = total;
+		this.total = qty*price;
 	}
 
 	public double getPrice() {
@@ -59,10 +59,6 @@ public class ModelItemSell {
 
 	public void setQty(int qty) {
 		this.qty = qty;
-	}
-
-	public void setTotal(double total) {
-		this.total = total;
 	}
 
 	public Object[] toTableRow(int rowNum) {
