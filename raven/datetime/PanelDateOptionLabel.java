@@ -14,6 +14,10 @@ public class PanelDateOptionLabel {
 	public void add(String label, LabelCallback callback) {
 		listItems.add(new Item(label, callback));
 	}
+	
+	public void add(String label) {
+		listItems.add(new Item(label));
+	}
 
 	public List<Item> getListItems() {
 		return listItems;
@@ -42,6 +46,11 @@ public class PanelDateOptionLabel {
 		public Item(String label, LabelCallback callback) {
 			this.label = label;
 			this.callback = callback;
+		}
+		
+		public Item(String label) {
+			this.label = label;
+			this.callback = null;
 		}
 
 		private final String label;

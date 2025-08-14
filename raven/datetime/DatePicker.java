@@ -40,11 +40,12 @@ public class DatePicker extends PanelPopupEditor
 	private DateSelectionModel dateSelectionModel;
 	private PanelDateOption panelDateOption;
 	private PanelDateMoh panelDateMoh;
+	private PanelDateRenderer panelDateRend;
 	private PanelDateOptionLabel panelDateOptionLabel;
 	private InputUtils.ValueCallback valueCallback;
 	private Icon editorIcon;
 	private String separator = " to ";
-	private boolean usePanelOption, useMyPanelOption;
+	private boolean usePanelOption, useMyPanelOption, useRendererOption;
 	private boolean closeAfterSelected = true;
 	private boolean animationEnabled = true;
 	private boolean startWeekOnMonday = true;
@@ -388,6 +389,51 @@ public class DatePicker extends PanelPopupEditor
 				if (panelDateMoh != null) {
 					remove(panelDateMoh);
 					panelDateMoh = null;
+					repaint();
+					revalidate();
+				}
+			}
+		}
+	}
+	
+	public void setUseRendPanelOption(boolean useRendererOption, String half_day, String full_day, String absc, String licen, String holiday,
+			String weekend) {
+		if (this.useRendererOption != useRendererOption) {
+			this.useRendererOption = useRendererOption;
+			if (useRendererOption) {
+				if (panelDateRend == null) {
+					panelDateRend = new PanelDateRenderer(this);
+					panelDateRend.installDateOptionLabel(half_day, full_day, absc, licen, holiday, weekend);
+				}
+				add(panelDateRend, "dock east,gap 0 10 10 10");
+				repaint();
+				revalidate();
+			} else {
+				if (panelDateRend != null) {
+					remove(panelDateRend);
+					panelDateRend = null;
+					repaint();
+					revalidate();
+				}
+			}
+		}
+	}
+	
+	public void setUseMyRendPanelOption(boolean useRendererOption) {
+		if (this.useRendererOption != useRendererOption) {
+			this.useRendererOption = useRendererOption;
+			if (useRendererOption) {
+				if (panelDateRend == null) {
+					panelDateRend = new PanelDateRenderer(this);
+					panelDateRend.installDateOptionLabel();
+				}
+				add(panelDateRend, "dock east,gap 0 10 10 10");
+				repaint();
+				revalidate();
+			} else {
+				if (panelDateRend != null) {
+					remove(panelDateRend);
+					panelDateRend = null;
 					repaint();
 					revalidate();
 				}
