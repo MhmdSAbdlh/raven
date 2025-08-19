@@ -1,27 +1,50 @@
 package raven.modal.toast;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.Animator;
 import com.formdev.flatlaf.util.CubicBezierEasing;
+
 import net.miginfocom.swing.MigLayout;
 import raven.modal.Toast;
 import raven.modal.component.DropShadowBorder;
 import raven.modal.component.ModalLineBorder;
+import raven.modal.event.ToastCallback;
 import raven.modal.toast.icon.RollingIcon;
-import raven.modal.toast.option.*;
+import raven.modal.toast.option.ToastBorderStyle;
+import raven.modal.toast.option.ToastInterpolator;
+import raven.modal.toast.option.ToastLayoutOption;
+import raven.modal.toast.option.ToastLocation;
+import raven.modal.toast.option.ToastOption;
+import raven.modal.toast.option.ToastStyle;
 import raven.modal.utils.ImageSnapshots;
 import raven.modal.utils.ModalUtils;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * @author Raven
@@ -236,7 +259,7 @@ public class ToastPanel extends JPanel {
         String columnLayout;
         boolean isShowCloseButton = toastData.getOption().getStyle().isShowCloseButton();
         String closeButtonLayout = isShowCloseButton ? "[]" : "8";
-        if (themesData.icon == null && toastPromise == null && toastData.getOption().getStyle().getCustomIcon() == null) {
+        if (toastPromise == null && (toastData.getOption().getStyle().getCustomIcon() == null && themesData.icon == null || !toastData.getOption().getStyle().isShowIcon())) {
             columnLayout = "10[grow]";
         } else {
             if (toastData.getOption().getStyle().isIconSeparateLine()) {
@@ -302,10 +325,25 @@ public class ToastPanel extends JPanel {
             }
 
             @Override
+            public void mousePressed(MouseEvent e) {
+                if (toastData != null) {
+                    toastData.getOption().getEvent().fireMousePressed(e, createToastCallback());
+                }
+            }
+
+            @Override
             public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    if (hover && toastData.getOption().isCloseOnClick() && !isCurrenPromise()) {
-                        stop();
+                if (hover) {
+                    if (toastData != null) {
+                        toastData.getOption().getEvent().fireMouseReleased(e, createToastCallback());
+                    }
+                    // toastData can be null if callback event invoke close method
+                    if (toastData != null) {
+                        if (SwingUtilities.isLeftMouseButton(e)) {
+                            if (toastData.getOption().isCloseOnClick() && !isCurrenPromise()) {
+                                stop();
+                            }
+                        }
                     }
                 }
             }
@@ -349,6 +387,9 @@ public class ToastPanel extends JPanel {
     }
 
     private Icon createIcon(ThemesData themesData) {
+        if (!toastData.getOption().getStyle().isShowIcon()) {
+            return null;
+        }
         if (toastData.getOption().getStyle().getCustomIcon() != null) {
             return toastData.getOption().getStyle().getCustomIcon();
         }
@@ -384,12 +425,16 @@ public class ToastPanel extends JPanel {
     }
 
     private JButton createCloseButton() {
-        JButton buttonClose = new JButton(new FlatSVGIcon("raven/modal/icon/close.svg", 0.3f));
+        Icon icon = toastData.getOption().getStyle().getCloseIcon();
+        if (icon == null) {
+            icon = new FlatSVGIcon("raven/modal/icon/close.svg", 0.3f);
+        }
+        JButton buttonClose = new JButton(icon);
         buttonClose.setFocusable(false);
         buttonClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         buttonClose.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:999;" +
-                "margin:5,5,5,5;" +
+                "margin:3,3,3,3;" +
                 "borderWidth:0;" +
                 "focusWidth:0;" +
                 "innerFocusWidth:0;" +
@@ -505,6 +550,25 @@ public class ToastPanel extends JPanel {
         } else {
             removeToast();
         }
+    }
+
+    private ToastCallback createToastCallback() {
+        return new ToastCallback() {
+            @Override
+            public void close() {
+                ToastPanel.this.stop();
+            }
+
+            @Override
+            public void closeAllImmediately() {
+                ToastPanel.this.close();
+            }
+
+            @Override
+            public boolean isCurrenPromise() {
+                return ToastPanel.this.isCurrenPromise();
+            }
+        };
     }
 
     private void removeToast() {
