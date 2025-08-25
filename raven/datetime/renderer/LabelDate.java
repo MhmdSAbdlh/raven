@@ -11,7 +11,8 @@ public enum LabelDate {
     LICENSE("Mostly Free", new Color(198, 140, 231), 0.8f), //purple
     ABSCENT("Abscent", new Color(239, 138, 138), 0.35f), // red
     BIRTHDAY("BIRTHDAY", new Color(188, 186, 107), 0.65f), // YELLOW
-    BILLS("BILLS", new Color(188, 107, 107), 0.75f); // red
+    BILLS("BILLS", new Color(188, 107, 107), 0.75f), // red
+	COMBO("COMBO",new Color(0x123524),1f); // combo
 
     private final String name;
     private final Color color;
