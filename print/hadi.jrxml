@@ -7,11 +7,10 @@
 	<parameter name="clientID" class="java.lang.String"/>
 	<parameter name="sellerName" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
-	<parameter name="totalR" class="java.lang.String"/>
-	<parameter name="qrcodeC" class="java.io.InputStream"/>
+	<parameter name="totalL" class="java.lang.String"/>
+	<parameter name="qrcodeH" class="java.io.InputStream"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="hora" class="java.lang.String"/>
-	<parameter name="vencimiento" class="java.lang.String"/>
 	<parameter name="invoiceN" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Integer"/>
@@ -27,42 +26,42 @@
 				<textElement textAlignment="Right">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[RUT: 216547290011]]></text>
+				<text><![CDATA[HADI TECH]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="20" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Abbas Chaachouh Mohamad]]></text>
+				<text><![CDATA[PHONE | ACCESSORIES | ELECTRONICS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="30" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[CEDROS DUTY FREE FREESHOP]]></text>
+				<text><![CDATA[LOCATION: MASHGARA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="40" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[33 Orientales 1170]]></text>
+				<text><![CDATA[WP: 71228724]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="50" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Rivera			Tel.:46221965]]></text>
+				<text><![CDATA[INSTAGRAM: @HADITECH.LB]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="70" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Tipo Documento:]]></text>
+				<text><![CDATA[Type Document:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="70" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
@@ -76,7 +75,7 @@
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Nro.Documento:]]></text>
+				<text><![CDATA[Nr.Document:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="80" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
@@ -90,21 +89,21 @@
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Forma Pago:]]></text>
+				<text><![CDATA[Form Of Payment:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="90" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Contado]]></text>
+				<text><![CDATA[Direct]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="100" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Fecha:]]></text>
+				<text><![CDATA[Date:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="100" y="100" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
@@ -131,7 +130,7 @@
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Consumo Final]]></text>
+				<text><![CDATA[Final Consume]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="30" y="155" width="100" height="15" uuid="2f889604-f4fe-4b4f-8f36-08553459bfad"/>
@@ -152,7 +151,7 @@
 				<textElement>
 					<font fontName="Tahoma" size="8"/>
 				</textElement>
-				<text><![CDATA[Nom:]]></text>
+				<text><![CDATA[Name:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="30" y="165" width="104" height="15" uuid="b40a9b18-8728-49e5-bc49-848307dd2553"/>
@@ -173,14 +172,14 @@
 				<textElement>
 					<font fontName="Tahoma" size="8"/>
 				</textElement>
-				<text><![CDATA[BRASIL]]></text>
+				<text><![CDATA[LEBANON]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="30" y="185" width="104" height="15" uuid="749784e4-c7c1-4bcc-a37d-6e02087e940b"/>
 				<textElement>
 					<font fontName="Tahoma" size="8"/>
 				</textElement>
-				<text><![CDATA[BRASIL]]></text>
+				<text><![CDATA[LEBANON]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -201,7 +200,7 @@
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Moneda: USD   Dolares]]></text>
+				<text><![CDATA[UNIT: USD   Dollars]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -278,39 +277,39 @@
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="##0.00">
-				<reportElement x="140" y="20" width="50" height="15" uuid="26f5ded5-6137-4306-8078-8de0d368701b"/>
+				<reportElement x="120" y="20" width="100" height="15" uuid="26f5ded5-6137-4306-8078-8de0d368701b"/>
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{totalR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{totalL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="35" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement>
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[————————————ADENDA————————————]]></text>
+				<text><![CDATA[————————————ADDENDUM————————————]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="55" width="350" height="15" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Cajero : ]]></text>
+				<text><![CDATA[Cashier : ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="50" y="55" width="350" height="15" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[MOHAMAD]]></text>
+				<text><![CDATA[HADI]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="65" width="100" height="15" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Vendedor : ]]></text>
+				<text><![CDATA[Seller : ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="50" y="65" width="100" height="15" uuid="f75c68e9-21c8-4d24-8e22-4b6e4b2a08f0"/>
@@ -324,28 +323,28 @@
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nro. Trans]]></text>
+				<text><![CDATA[Nr. Trans]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="50" y="80" width="50" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha]]></text>
+				<text><![CDATA[Date]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="80" width="50" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Hora]]></text>
+				<text><![CDATA[Time]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="150" y="80" width="50" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Caja]]></text>
+				<text><![CDATA[Cash]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="95" width="200" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
@@ -390,54 +389,40 @@
 				<textElement>
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[——————————FIN ADENDA——————————]]></text>
+				<text><![CDATA[——————————END ADDENDUM——————————]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="135" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[Thank you for being part of our family]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="150" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[We love having you back!]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="175" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[Stay connected and Follow us on Instagram!]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="190" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[Using @haditech.lb or the barcode below.]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="50" y="130" width="100" height="100" uuid="bd673bfe-abce-415f-9aee-8a20b8ec18e2"/>
-				<imageExpression><![CDATA[$P{qrcodeC}]]></imageExpression>
+				<reportElement x="50" y="205" width="100" height="100" uuid="bd673bfe-abce-415f-9aee-8a20b8ec18e2"/>
+				<imageExpression><![CDATA[$P{qrcodeH}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="0" y="230" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="8"/>
-				</textElement>
-				<text><![CDATA[Codigo de Seguridad :  uW+FHh]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="20" y="240" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="8"/>
-				</textElement>
-				<text><![CDATA[Res DGI 3570/2014]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="20" y="250" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="9"/>
-				</textElement>
-				<text><![CDATA[Puede verificar comprobante en :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="40" y="275" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="9"/>
-				</textElement>
-				<text><![CDATA[IVA al dia]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="285" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="8"/>
-				</textElement>
-				<text><![CDATA[Nro. CAE 90,240,089,974   Serie :A]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="295" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
-				<textElement>
-					<font fontName="Tahoma" size="8"/>
-				</textElement>
-				<text><![CDATA[Inicial :	150,101		Final:	160,100]]></text>
-			</staticText>
 	<textField>
     	<reportElement x="0" y="310" width="204" height="30" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
     	<box leftPadding="2" rightPadding="2" topPadding="5" bottomPadding="5">
@@ -449,7 +434,7 @@
    		 <textElement textAlignment="Center">
         	<font size="11" isBold="true"/>
     	</textElement>
-    	<textFieldExpression><![CDATA["Fecha de Vencimiento: " + $P{vencimiento}]]></textFieldExpression>
+    	<textFieldExpression><![CDATA["H A D I		 T E C H"]]></textFieldExpression>
 	</textField>
 		</band>
 	</summary>

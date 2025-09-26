@@ -23,7 +23,8 @@ public class ParameterReportPayment {
 	private List<FieldReportPayment> fields;
 
 	private String client_name, client_id, seller;
-
+	private double cambio;
+	private int invoiceN;
 	private String fecha, hora;
 	private static final byte[] TRANSPARENT_1X1_PNG = Base64.getDecoder()
 			.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
@@ -32,17 +33,27 @@ public class ParameterReportPayment {
 	}
 
 	public ParameterReportPayment(String client_name, String client_id, List<FieldReportPayment> fields, String fecha,
-			String hora, String seller) {
+			String hora, String seller, double cambio, int invoiceN) {
 		this.client_name = client_name;
 		this.client_id = client_id;
 		this.seller = seller;
 		this.fields = fields;
 		this.hora = hora;
 		this.fecha = fecha;
+		this.cambio = cambio;
+		this.invoiceN = invoiceN;
 	}
 
 	public String geHora() {
 		return hora;
+	}
+
+	public double getCambio() {
+		return cambio;
+	}
+
+	public String getInvoiceNumber() {
+		return "" + invoiceN;
 	}
 
 	public String getClienntID() {
@@ -65,9 +76,9 @@ public class ParameterReportPayment {
 		return seller;
 	}
 
-	public InputStream getQrcode() {
+	public InputStream getQrcode(String type) {
 		try {
-			return generateQrcode();
+			return generateQrcode(type);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ByteArrayInputStream(TRANSPARENT_1X1_PNG); // Safe fallback
@@ -85,7 +96,21 @@ public class ParameterReportPayment {
 		double tot = 0;
 		for (FieldReportPayment report : fields)
 			tot += report.getTotal();
-		return "R$" + String.format("%.2f", tot * 5);
+		return "R$" + String.format("%.2f", tot * cambio);
+	}
+
+	public String getTotalP() {
+		double tot = 0;
+		for (FieldReportPayment report : fields)
+			tot += report.getTotal();
+		return "$" + String.format("%.0f", tot * cambio);
+	}
+
+	public String getTotalL() {
+		double tot = 0;
+		for (FieldReportPayment report : fields)
+			tot += report.getTotal();
+		return String.format("%.0f", tot * cambio) + " L.L.";
 	}
 
 	public void setClientID(String client_id) {
@@ -133,8 +158,10 @@ public class ParameterReportPayment {
 				numero, fecha, montoTotal);
 	}
 
-	private InputStream generateQrcode() throws WriterException, IOException {
-		String invoice = buildDgiUrl();
+	private InputStream generateQrcode(String type) throws WriterException, IOException {
+		String invoice = type.equalsIgnoreCase("original") ? buildDgiUrl()
+				: type.equalsIgnoreCase("fake") ? "https://www.instagram.com/cedrosfreeshop"
+						: "https://www.instagram.com/haditech.lb";
 		Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
 		hints.put(EncodeHintType.MARGIN, 1);
 

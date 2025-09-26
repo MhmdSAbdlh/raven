@@ -7,7 +7,7 @@
 	<parameter name="clientID" class="java.lang.String"/>
 	<parameter name="sellerName" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
-	<parameter name="totalR" class="java.lang.String"/>
+	<parameter name="totalP" class="java.lang.String"/>
 	<parameter name="qrcodeC" class="java.io.InputStream"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="hora" class="java.lang.String"/>
@@ -282,7 +282,7 @@
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{totalR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{totalP}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="35" width="350" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
