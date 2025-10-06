@@ -3,11 +3,14 @@ package abed;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -42,6 +45,8 @@ public class ReportManager {
 
 	public JasperPrint generateReportPayment(ParameterReportPayment data) throws JRException {
 		Map<String, Object> para = new HashMap<>();
+		para.put("clientName", data.getClientName());
+		para.put("clientID", data.getClienntID());
 		para.put("total", data.getTotal());
 		para.put("totalP", data.getTotalP());
 		para.put("totalD", data.getTotalD());
@@ -74,6 +79,26 @@ public class ReportManager {
 		para.put("garentia", garentia);
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data.getFields());
 		return JasperFillManager.fillReport(reportPay, para, dataSource);
+	}
+
+	public JasperPrint generateSummary(ParameterReportPayment data) throws JRException {
+		Map<String, Object> para = new HashMap<>();
+		InputStream logoStream = getClass().getResourceAsStream("/abed/manhattan.png");
+		if (logoStream == null) {
+			throw new IllegalStateException("Logo not found in resources: /abed/manhattan.png");
+		}
+		para.put("fecha", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		para.put("logo", logoStream);
+		para.put("totalSell", data.getTotalSale());
+		para.put("totalCaja", data.getTotalC());
+		para.put("gastos", data.getGastos());
+		para.put("agregados", data.getAgregados());
+		para.put("totalSellP", data.getTotalSaleP());
+		para.put("totalCajaP", data.getTotalCP());
+		para.put("gastosP", data.getGastosP());
+		para.put("agregadosP", data.getAgregadosP());
+		return JasperFillManager.fillReport(reportPay, para, new JREmptyDataSource());
+
 	}
 
 	public void printReportPayment(ParameterReportPayment data) throws JRException {

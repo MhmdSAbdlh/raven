@@ -1,12 +1,16 @@
 package print;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -74,6 +78,26 @@ public class ReportManager {
 		para.put("garentia", garentia);
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data.getFields());
 		return JasperFillManager.fillReport(reportPay, para, dataSource);
+	}
+
+	public JasperPrint generateSummary(ParameterReportPayment data) throws JRException {
+		Map<String, Object> para = new HashMap<>();
+		InputStream logoStream = getClass().getResourceAsStream("/print/cedros.png");
+		if (logoStream == null)
+			throw new IllegalStateException("Logo not found in resources: /print/cedros.png");
+		para.put("fecha", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		para.put("logo", logoStream);
+		para.put("inicio", data.getInicio());
+		para.put("totalSell", data.getTotalSale());
+		para.put("totalCaja", data.getTotalC());
+		para.put("gastos", data.getGastos());
+		para.put("agregados", data.getAgregados());
+		para.put("totalSellP", data.getTotalSaleP());
+		para.put("totalCajaP", data.getTotalCP());
+		para.put("gastosP", data.getGastosP());
+		para.put("agregadosP", data.getAgregadosP());
+		para.put("inicioP", data.getInicioP());
+		return JasperFillManager.fillReport(reportPay, para, new JREmptyDataSource());
 	}
 
 	public void printReportPayment(ParameterReportPayment data) throws JRException {

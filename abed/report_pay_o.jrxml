@@ -9,6 +9,8 @@
 	<parameter name="vencimiento" class="java.lang.String"/>
 	<parameter name="logo" class="java.io.InputStream"/>
 	<parameter name="invoiceN" class="java.lang.String"/>
+	<parameter name="clientName" class="java.lang.String"/>
+	<parameter name="clientID" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Integer"/>
 	<field name="price" class="java.lang.Double"/>
@@ -17,7 +19,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="230" splitType="Stretch">
+		<band height="250" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="0" y="10" width="180" height="70" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
@@ -78,19 +80,47 @@
 				<text><![CDATA[Consumo Final]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="210" width="100" height="15" uuid="3da27491-e647-4de4-9f8a-1a9aa46015cb"/>
+				<reportElement x="0" y="195" width="100" height="15" uuid="3da27491-e647-4de4-9f8a-1a9aa46015cb"/>
 				<textElement>
 					<font fontName="Tahoma" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha: "+ $P{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="210" width="180" height="15" uuid="749784e4-c7c1-4bcc-a37d-6e02087e940b"/>
+				<reportElement x="0" y="195" width="180" height="15" uuid="749784e4-c7c1-4bcc-a37d-6e02087e940b"/>
 				<textElement textAlignment="Right">
 					<font fontName="Tahoma" size="8"/>
 				</textElement>
 				<text><![CDATA[Moneda: UYU]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="215" width="100" height="15" uuid="2f889604-f4fe-4b4f-8f36-08553459bfad"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[CPF: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="215" width="104" height="15" uuid="749784e4-c7c1-4bcc-a37d-6e02087e940b"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clientID}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="225" width="100" height="15" uuid="2f889604-f4fe-4b4f-8f36-08553459bfad"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<text><![CDATA[Nom:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="225" width="104" height="15" uuid="b40a9b18-8728-49e5-bc49-848307dd2553"/>
+				<textElement>
+					<font fontName="Tahoma" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clientName}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>

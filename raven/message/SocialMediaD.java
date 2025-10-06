@@ -17,9 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.text.SimpleAttributeSet;
@@ -36,10 +34,10 @@ import javaswingdev.sm3d.SocialMedia3D;
 import javaswingdev.sm3d.SocialMediaEvent;
 import raven.swing.Glass;
 
-public class SocialMedia extends javax.swing.JDialog {
+public class SocialMediaD extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = 1L;
-	private final JFrame fram;
+	private final javax.swing.JDialog fram;
 	private Glass glass;
 	private OverlayP overlay = new OverlayP();
 
@@ -47,7 +45,7 @@ public class SocialMedia extends javax.swing.JDialog {
 		WHATSAPP, YOUTUBE, TWITTER, WEBSITE, FACEBOOK, INSTAGRAM, PAYPAL
 	}
 
-	public SocialMedia(JFrame fram) {
+	public SocialMediaD(javax.swing.JDialog fram) {
 		super(fram, false);
 		this.fram = fram;
 		initComponents();
@@ -90,12 +88,12 @@ public class SocialMedia extends javax.swing.JDialog {
 		overlay.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Point mousePoint = e.getPoint();
-				SwingUtilities.convertPointToScreen(mousePoint, overlay); // Convert to screen coordinates
-
+				Point mousePoint = e.getLocationOnScreen();
 				Rectangle dialogBounds = getBounds();
-				if (!dialogBounds.contains(mousePoint))
+				dialogBounds.setLocation(getLocationOnScreen());
+				if (!dialogBounds.contains(mousePoint)) {
 					closeMessage();
+				}
 			}
 		});
 		setModalityType(Dialog.ModalityType.MODELESS);
@@ -161,31 +159,6 @@ public class SocialMedia extends javax.swing.JDialog {
 		}
 	}
 
-	public void setLinks(String youtube, String whatsapp, String facebook, String website, String instagram,
-			String twitter, String paypal) {
-		if (!youtube.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Youtube", youtube, FontAwesome.YOUTUBE_PLAY, Color.RED,
-					new Color(204, 0, 0), new Color(229, 0, 0)));
-		if (!website.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Website", website, FontAwesome.GLOBE, new Color(70, 156, 235),
-					new Color(48, 107, 161), new Color(48, 107, 161)));
-		if (!whatsapp.isBlank())
-			socialMedia3D1.addItem(new ModelItem("WhatsApp", whatsapp, FontAwesome.WHATSAPP, new Color(74, 220, 63),
-					new Color(36, 143, 3), new Color(56, 161, 48)));
-		if (!facebook.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Facebook", facebook, FontAwesome.FACEBOOK, new Color(23, 120, 242),
-					new Color(17, 93, 188), new Color(20, 106, 214)));
-		if (!instagram.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Instagram", instagram, FontAwesome.INSTAGRAM, new Color(193, 53, 132),
-					new Color(140, 38, 96), new Color(165, 44, 113)));
-		if (!twitter.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Twitter", twitter, FontAwesome.TWITTER, new Color(29, 161, 242),
-					new Color(22, 125, 188), new Color(25, 142, 214)));
-		if (!paypal.isBlank())
-			socialMedia3D1.addItem(new ModelItem("Paypal", paypal, FontAwesome.PAYPAL, new Color(0x121212),
-					new Color(0x545454), new Color(0xc4c4c4)));
-	}
-
 	public void setTxtColor(Color color) {
 		lbTitle.setForeground(color);
 	}
@@ -202,7 +175,7 @@ public class SocialMedia extends javax.swing.JDialog {
 	private void initComponents() {
 		background1 = new raven.message.Background();
 		cmdOK = new JButton();
-		lbIcon = new javax.swing.JLabel();
+		lbIcon = new javax.swing.JLabel(icon);
 		lbTitle = new javax.swing.JTextPane();
 		socialMedia3D1 = new SocialMedia3D();
 
@@ -229,7 +202,6 @@ public class SocialMedia extends javax.swing.JDialog {
 		});
 
 		lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lbIcon.setIcon(icon); // NOI18N
 
 		lbTitle.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
 		lbTitle.setEditable(false);
@@ -250,9 +222,9 @@ public class SocialMedia extends javax.swing.JDialog {
 		background1Layout.setHorizontalGroup(background1Layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(background1Layout.createSequentialGroup().addComponent(socialMedia3D1,
-						javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
+						javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
 				.addComponent(cmdOK, GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE,
-						javax.swing.GroupLayout.DEFAULT_SIZE, 150)
+						javax.swing.GroupLayout.DEFAULT_SIZE, 100)
 				.addComponent(lbIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
 						Short.MAX_VALUE)
 				.addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -263,12 +235,12 @@ public class SocialMedia extends javax.swing.JDialog {
 								background1Layout.createSequentialGroup()
 										.addComponent(lbIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 74,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(30, 30, 30).addComponent(lbTitle).addGap(10, 10, 10)
+										.addGap(30, 30, 30).addComponent(lbTitle).addGap(15, 15, 15)
 										.addComponent(socialMedia3D1, javax.swing.GroupLayout.PREFERRED_SIZE, 120,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(10, 10, 10).addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE,
+										.addGap(15, 15, 15).addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE,
 												40, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(10, 10, 10)));
+										.addGap(15, 15, 15)));
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -281,9 +253,8 @@ public class SocialMedia extends javax.swing.JDialog {
 		cmdOK.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE)
 					closeMessage();
-				}
 			}
 		});
 		pack();

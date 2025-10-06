@@ -26,6 +26,7 @@ public class ParameterReportPayment {
 	private double cambio;
 	private int invoiceN;
 	private String fecha, hora;
+	private int totalS, gastos, agregado, totalC, totalSP, gastosP, agregadoP, totalCP, inicio, inicioP;
 	private static final byte[] TRANSPARENT_1X1_PNG = Base64.getDecoder()
 			.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
 
@@ -42,6 +43,20 @@ public class ParameterReportPayment {
 		this.fecha = fecha;
 		this.cambio = cambio;
 		this.invoiceN = invoiceN;
+	}
+	
+	public ParameterReportPayment(int inicio, int totalS, int gastos, int agregado, int totalC,int inicioP, int totalSP, int gastosP,
+			int agregadoP, int totalCP) {
+		this.inicio = inicio;
+		this.totalS = totalS;
+		this.totalC = totalC;
+		this.gastos = gastos;
+		this.agregado = agregado;
+		this.inicioP = inicioP;
+		this.totalSP = totalSP;
+		this.totalCP = totalCP;
+		this.gastosP = gastosP;
+		this.agregadoP = agregadoP;
 	}
 
 	public String geHora() {
@@ -172,4 +187,46 @@ public class ParameterReportPayment {
 		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream); // Direct ZXing method
 		return new ByteArrayInputStream(outputStream.toByteArray());
 	}
+	
+	// EXPORT DAY SUMMARY
+	public int getTotalSale() {
+		return totalS;
+	}
+
+	public int getTotalC() {
+		return totalC;
+	}
+
+	public int getGastos() {
+		return gastos;
+	}
+
+	public int getAgregados() {
+		return agregado;
+	}
+
+	public int getTotalSaleP() {
+		return totalSP;
+	}
+
+	public int getTotalCP() {
+		return totalCP;
+	}
+
+	public int getGastosP() {
+		return gastosP;
+	}
+
+	public int getAgregadosP() {
+		return agregadoP;
+	}
+
+	public int getInicio() {
+		return inicio;
+	}
+
+	public int getInicioP() {
+		return inicioP;
+	}
+
 }

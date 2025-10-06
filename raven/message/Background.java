@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JPanel;
 
@@ -37,7 +37,7 @@ public class Background extends JPanel {
 		int iconSize = y * 2;
 		int iconX = (width - (iconSize + totalIconSpace)) / 2;
 		int iconY = 0;
-		Area area = new Area(new Rectangle2D.Double(x, y, width, height - y));
+		Area area = new Area(new RoundRectangle2D.Double(x, y, width, height - y, 20, 20));
 		area.subtract(new Area(
 				new Ellipse2D.Double(iconX, iconY - iconSpace, iconSize + totalIconSpace, iconSize + totalIconSpace)));
 		area.add(new Area(new Ellipse2D.Double(iconX + iconSpace, 0, iconSize, iconSize)));
