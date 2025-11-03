@@ -244,7 +244,6 @@ public class Graphics2DProxy extends Graphics2D {
         return delegate.toString();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Rectangle getClipRect() {
         return delegate.getClipRect();

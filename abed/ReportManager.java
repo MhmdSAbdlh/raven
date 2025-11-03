@@ -97,6 +97,7 @@ public class ReportManager {
 		para.put("totalCajaP", data.getTotalCP());
 		para.put("gastosP", data.getGastosP());
 		para.put("agregadosP", data.getAgregadosP());
+		para.put("pix", data.getPix());
 		return JasperFillManager.fillReport(reportPay, para, new JREmptyDataSource());
 
 	}

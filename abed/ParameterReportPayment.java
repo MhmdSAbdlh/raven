@@ -23,7 +23,7 @@ public class ParameterReportPayment {
 	private int invoiceN;
 	private String fecha, hora;
 	private String client_name, client_id;
-	private int totalS, gastos, agregado, totalC, totalSP, gastosP, agregadoP, totalCP;
+	private int totalS, gastos, agregado, totalC, totalSP, gastosP, agregadoP, totalCP, pix;
 	private static final byte[] TRANSPARENT_1X1_PNG = Base64.getDecoder()
 			.decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
 
@@ -42,7 +42,7 @@ public class ParameterReportPayment {
 	}
 
 	public ParameterReportPayment(int totalS, int gastos, int agregado, int totalC, int totalSP, int gastosP,
-			int agregadoP, int totalCP) {
+			int agregadoP, int totalCP, int pix) {
 		this.totalS = totalS;
 		this.totalC = totalC;
 		this.gastos = gastos;
@@ -51,6 +51,7 @@ public class ParameterReportPayment {
 		this.totalCP = totalCP;
 		this.gastosP = gastosP;
 		this.agregadoP = agregadoP;
+		this.pix = pix;
 	}
 
 	public String getClientName() {
@@ -109,8 +110,8 @@ public class ParameterReportPayment {
 	public String getTotalD() {
 		double tot = 0;
 		if (fields != null)
-		for (FieldReportPayment report : fields)
-			tot += report.getTotal();
+			for (FieldReportPayment report : fields)
+				tot += report.getTotal();
 		return String.format("%.2f", tot / 5);
 	}
 
@@ -180,6 +181,10 @@ public class ParameterReportPayment {
 
 	public int getAgregadosP() {
 		return agregadoP;
+	}
+
+	public int getPix() {
+		return pix;
 	}
 
 }
