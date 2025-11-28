@@ -48,7 +48,7 @@
 				<textElement textAlignment="Left">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[WhatsApp +55(55)999974651]]></text>
+				<text><![CDATA[WhatsApp +55(55)981024506]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="55" width="204" height="15" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
@@ -224,7 +224,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="330" splitType="Stretch">
+		<band height="335" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="200" height="10" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<box>
@@ -351,7 +351,7 @@
 				<text><![CDATA[——————————FIN ADENDA——————————]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="50" y="130" width="100" height="100" uuid="bd673bfe-abce-415f-9aee-8a20b8ec18e2"/>
+				<reportElement x="50" y="125" width="100" height="100" uuid="bd673bfe-abce-415f-9aee-8a20b8ec18e2"/>
 				<imageExpression><![CDATA[$P{qrcodeF}]]></imageExpression>
 			</image>
 			<staticText>
@@ -369,21 +369,21 @@
 				<text><![CDATA[Adoramos ter você de volta!]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="250" width="200" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
+				<reportElement x="0" y="255" width="200" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Center">
-					<font fontName="Tahoma" size="9"/>
+					<font fontName="Tahoma" size="8"/>
 				</textElement>
-				<text><![CDATA[Fique conectado e siga-nos no Instagram!]]></text>
+				<text><![CDATA[Fique conectado e siga-nos no Instagram usando @cedrosfreeshop]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="275" width="200" height="20" uuid="0635162e-18f1-4e47-91cf-60ced9334e1b"/>
 				<textElement textAlignment="Center">
-					<font fontName="Tahoma" size="9"/>
+					<font fontName="Tahoma" size="8"/>
 				</textElement>
-				<text><![CDATA[Usando @cedrosfreeshop ou o código de barras abaixo.]]></text>
+				<text><![CDATA[Ou entre no nosso grupo wpp usando o código de barras acima!]]></text>
 			</staticText>
 	<textField>
-    	<reportElement x="0" y="295" width="204" height="30" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
+    	<reportElement x="0" y="300" width="204" height="30" uuid="42cacdc9-f3a5-4942-a6f4-5e1cb5b3c7fa"/>
     	<box leftPadding="2" rightPadding="2" topPadding="5" bottomPadding="5">
         	<topPen lineWidth="1"/>
        		 <leftPen lineWidth="1"/>

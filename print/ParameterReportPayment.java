@@ -44,9 +44,9 @@ public class ParameterReportPayment {
 		this.cambio = cambio;
 		this.invoiceN = invoiceN;
 	}
-	
-	public ParameterReportPayment(int inicio, int totalS, int gastos, int agregado, int totalC,int inicioP, int totalSP, int gastosP,
-			int agregadoP, int totalCP) {
+
+	public ParameterReportPayment(int inicio, int totalS, int gastos, int agregado, int totalC, int inicioP,
+			int totalSP, int gastosP, int agregadoP, int totalCP) {
 		this.inicio = inicio;
 		this.totalS = totalS;
 		this.totalC = totalC;
@@ -175,7 +175,7 @@ public class ParameterReportPayment {
 
 	private InputStream generateQrcode(String type) throws WriterException, IOException {
 		String invoice = type.equalsIgnoreCase("original") ? buildDgiUrl()
-				: type.equalsIgnoreCase("fake") ? "https://www.instagram.com/cedrosfreeshop"
+				: type.equalsIgnoreCase("fake") ? "https://chat.whatsapp.com/CrC6DxwBAlqGQUhp0YpZEL"
 						: "https://www.instagram.com/haditech.lb";
 		Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
 		hints.put(EncodeHintType.MARGIN, 1);
@@ -187,7 +187,7 @@ public class ParameterReportPayment {
 		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream); // Direct ZXing method
 		return new ByteArrayInputStream(outputStream.toByteArray());
 	}
-	
+
 	// EXPORT DAY SUMMARY
 	public int getTotalSale() {
 		return totalS;
