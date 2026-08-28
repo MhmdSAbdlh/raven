@@ -47,15 +47,27 @@ public class ToastOption {
         return closeOnClick;
     }
 
+    public boolean isHtmlEnabled() {
+        return htmlEnabled;
+    }
+
     public int getDuration() {
         return duration;
+    }
+
+    public int getOpenDuration() {
+        return openDuration;
+    }
+
+    public int getCloseDuration() {
+        return closeDuration;
     }
 
     public int getDelay() {
         return delay;
     }
 
-    private ToastOption(ToastEvent event, ToastLayoutOption layoutOption, ToastStyle style, ToastInterpolator interpolator, boolean animationEnabled, boolean heavyWeight, boolean pauseDelayOnHover, boolean autoClose, boolean closeOnClick, int duration, int delay) {
+    private ToastOption(ToastEvent event, ToastLayoutOption layoutOption, ToastStyle style, ToastInterpolator interpolator, boolean animationEnabled, boolean heavyWeight, boolean pauseDelayOnHover, boolean autoClose, boolean closeOnClick, boolean htmlEnabled, int duration, int openDuration, int closeDuration, int delay) {
         this.event = event;
         this.layoutOption = layoutOption;
         this.style = style;
@@ -65,7 +77,10 @@ public class ToastOption {
         this.pauseDelayOnHover = pauseDelayOnHover;
         this.autoClose = autoClose;
         this.closeOnClick = closeOnClick;
+        this.htmlEnabled = htmlEnabled;
         this.duration = duration;
+        this.openDuration = openDuration;
+        this.closeDuration = closeDuration;
         this.delay = delay;
     }
 
@@ -81,7 +96,10 @@ public class ToastOption {
     private boolean pauseDelayOnHover = true;
     private boolean autoClose = true;
     private boolean closeOnClick;
+    private boolean htmlEnabled;
     private int duration = 350;
+    private int openDuration = -1;
+    private int closeDuration = -1;
     private int delay = 3000;
 
     public ToastOption setEvent(ToastEvent event) {
@@ -129,8 +147,23 @@ public class ToastOption {
         return this;
     }
 
+    public ToastOption setHtmlEnabled(boolean htmlEnabled) {
+        this.htmlEnabled = htmlEnabled;
+        return this;
+    }
+
     public ToastOption setDuration(int duration) {
         this.duration = duration;
+        return this;
+    }
+
+    public ToastOption setOpenDuration(int openDuration) {
+        this.openDuration = openDuration;
+        return this;
+    }
+
+    public ToastOption setCloseDuration(int closeDuration) {
+        this.closeDuration = closeDuration;
         return this;
     }
 
@@ -140,6 +173,6 @@ public class ToastOption {
     }
 
     public ToastOption copy() {
-        return new ToastOption(event.copy(), layoutOption.copy(), style.copy(), interpolator, animationEnabled, heavyWeight, pauseDelayOnHover, autoClose, closeOnClick, duration, delay);
+        return new ToastOption(event.copy(), layoutOption.copy(), style.copy(), interpolator, animationEnabled, heavyWeight, pauseDelayOnHover, autoClose, closeOnClick, htmlEnabled, duration, openDuration, closeDuration, delay);
     }
 }

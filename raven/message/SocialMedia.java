@@ -27,7 +27,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.lowagie.text.Font;
 
 import javaswingdev.FontAwesome;
 import javaswingdev.sm3d.ModelItem;
@@ -220,7 +219,7 @@ public class SocialMedia extends javax.swing.JDialog {
 						+ "#3B82F6" + ";" + "[light]focusColor:" + "#3B82F6" + ";" + "[dark]focusColor:" + "#3B82F6"
 						+ ";" + "[light]hoverBorderColor:" + "#3B82F6" + ";" + "[dark]hoverBorderColor:" + "#3B82F6"
 						+ ";" + "[light]foreground:" + "#3B82F6" + ";" + "[dark]foreground:" + "#3B82F6" + ";");
-		cmdOK.setFont(new java.awt.Font("sansserif", Font.BOLD, 18));
+		cmdOK.setFont(new java.awt.Font("sansserif", java.awt.Font.BOLD, 18));
 		cmdOK.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

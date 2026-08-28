@@ -3,6 +3,7 @@ package raven.modal.toast.option;
 import raven.modal.Toast;
 
 import javax.swing.*;
+import java.util.Locale;
 
 /**
  * @author Raven
@@ -45,6 +46,10 @@ public class ToastStyle {
         return promiseLabel;
     }
 
+    public String getLabelText() {
+        return labelText;
+    }
+
     public Icon getCustomIcon() {
         return customIcon;
     }
@@ -57,12 +62,15 @@ public class ToastStyle {
         if (type == null) {
             return promiseLabel;
         } else {
-            String text = type.toString().toLowerCase();
-            return text.substring(0, 1).toUpperCase() + text.substring(1);
+            if (labelText != null) {
+                return labelText;
+            }
+            String text = type.toString().toLowerCase(Locale.ROOT);
+            return text.substring(0, 1).toUpperCase(Locale.ROOT) + text.substring(1);
         }
     }
 
-    private ToastStyle(ToastBorderStyle borderStyle, BackgroundType backgroundType, boolean showIcon, boolean showLabel, boolean iconSeparateLine, boolean showCloseButton, boolean paintTextColor, String promiseLabel, Icon icon, Icon closeIcon) {
+    private ToastStyle(ToastBorderStyle borderStyle, BackgroundType backgroundType, boolean showIcon, boolean showLabel, boolean iconSeparateLine, boolean showCloseButton, boolean paintTextColor, String promiseLabel, String labelText, Icon icon, Icon closeIcon) {
         this.borderStyle = borderStyle;
         this.backgroundType = backgroundType;
         this.showIcon = showIcon;
@@ -71,6 +79,7 @@ public class ToastStyle {
         this.showCloseButton = showCloseButton;
         this.paintTextColor = paintTextColor;
         this.promiseLabel = promiseLabel;
+        this.labelText = labelText;
         this.customIcon = icon;
         this.closeIcon = closeIcon;
     }
@@ -86,6 +95,7 @@ public class ToastStyle {
     private boolean showCloseButton = true;
     private boolean paintTextColor;
     private String promiseLabel = "Loading";
+    private String labelText;
     private Icon customIcon;
     private Icon closeIcon;
 
@@ -129,6 +139,11 @@ public class ToastStyle {
         return this;
     }
 
+    public ToastStyle setLabelText(String labelText) {
+        this.labelText = labelText;
+        return this;
+    }
+
     public ToastStyle setCustomIcon(Icon icon) {
         this.customIcon = icon;
         return this;
@@ -140,7 +155,7 @@ public class ToastStyle {
     }
 
     public ToastStyle copy() {
-        return new ToastStyle(borderStyle.copy(), backgroundType, showIcon, showLabel, iconSeparateLine, showCloseButton, paintTextColor, promiseLabel, customIcon, closeIcon);
+        return new ToastStyle(borderStyle.copy(), backgroundType, showIcon, showLabel, iconSeparateLine, showCloseButton, paintTextColor, promiseLabel, labelText, customIcon, closeIcon);
     }
 
     public enum BackgroundType {
