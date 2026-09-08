@@ -52,7 +52,10 @@ public class ToastPanel extends JPanel {
 	}
 
 	public ToastOption getOption() {
-		return toastData.getOption();
+		if (getToastData() != null)
+			return toastData.getOption();
+		else
+			return new ToastOption();
 	}
 
 	public String getId() {
